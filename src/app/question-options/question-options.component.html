@@ -1,0 +1,47 @@
+<h2>Set List of options</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form #f="ngForm">
+            <div class="form-group">
+                <label for="code">Code</label>
+                <input #Code name="code" id="code"
+                    type="text" class="form-control" required>
+                <div class="alert alert-danger" *ngIf="Code.touched && Code.invalid">
+                    Code is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Texte">Texte</label>
+                <input #Texte name="Texte"
+                    id="Texte + {{ reference.Id }}" type="text" class="form-control" required>
+                <div class="alert alert-danger" *ngIf="Texte.touched && Texte.invalid">
+                    Texte is required.
+                </div>
+            </div>
+            <button (click)="addDynamic(Code, Texte)" class="btn btn-secondary">Add</button>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <br>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Code</th>
+                    <th>Texte</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of references">
+                    <td>{{ r.Code }}</td>
+                    <td>{{ r.Texte }}</td>
+                    <td>
+                        <button type="button" (click)="removeReference(r)" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

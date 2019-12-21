@@ -1,0 +1,72 @@
+<h1>Liste des projets</h1>
+<p>
+    <a routerLink="/new-project" class="btn btn-primary">New Project</a>
+</p>
+<data-table
+    [items]="projects"
+    [itemCount]="projectCount"
+    (reload)="reloadProjects($event)"
+>
+    <data-table-column
+        [property]="'Name'"
+        [header]="'Name'"
+        [sortable]="'true'"
+        [resizable]="'true'"
+    >
+        
+    </data-table-column>
+
+    <data-table-column
+        [property]="'Description'"
+        [header]="'Description'"
+        [sortable]="'true'"
+        [resizable]="'true'"
+    >
+        
+    </data-table-column>
+
+    <data-table-column
+        [property]="'Domaine'"
+        [header]="'Domaine'"
+        [sortable]="'true'"
+        [resizable]="'true'"
+    >
+        <ng-template #dataTableCell let-item="item">
+            {{ item.Domaine.Name }}
+        </ng-template>
+    </data-table-column>
+
+    <data-table-column
+        [property]="'CreePar'"
+        [header]="'Cree par'"
+        [sortable]="'true'"
+        [resizable]="'true'"
+    >
+        
+    </data-table-column>
+
+    <data-table-column
+        [property]="'CreeLe'"
+        [header]="'Cree Le'"
+        [sortable]="'true'"
+        [resizable]="'true'"
+    >
+        
+    </data-table-column>
+
+    <data-table-column
+        [property]="'Id'"
+    >
+        <ng-template #dataTableCell let-item="item">
+            <a [routerLink]="['/edit-project', item.Id]">Edit</a>
+        </ng-template>
+    </data-table-column>
+
+    <data-table-column
+        [property]="'Id'"
+    >
+        <ng-template #dataTableCell let-item="item">
+            <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
+        </ng-template>
+    </data-table-column>
+</data-table>

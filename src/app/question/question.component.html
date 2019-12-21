@@ -1,0 +1,77 @@
+<div class="card">
+    <div class="card-header" id="headingOne">
+        <h4 class="mb-0">
+            <button class="btn btn-link" type="button" (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" data-toggle="collapse"
+                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                
+                <div *ngIf="question.Name">
+                    {{ question.Name }} : {{ question.Message }}
+                </div> 
+                <div *ngIf="!question.Name"> Add New Question </div>              
+            </button>
+            <button type="button" (click)="deleteQuestion()" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+    </div>
+
+    <div id="collapseOne" [collapse]="!isCollapsed" [isAnimated]="true" class="collapse show"
+        aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1> Question </h1>
+                    <form #f="ngForm" (ngSubmit)="save(f.value)">
+                        <div class="form-group">
+                            <label for="title">Name</label>
+                            <input #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.Name" id="name + {{ question.Id }}" type="text" class="form-control" required>
+                            <div class="alert alert-danger" *ngIf="Name.touched && Name.invalid">
+                                Name is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input #description="ngModel" (keyup.enter)="setMessage(description)" name="Message" [(ngModel)]="question.Message" id="Message + {{ question.Id }}" type="text" class="form-control" required>
+                            <div class="alert alert-danger" *ngIf="description.touched && description.invalid">
+                                Description is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="domaine">Component</label>
+                            <select #ComponentId="ngModel" (change)="getSelectedValue()" name="ComponentId" [(ngModel)]="question.ComponentId" id="ComponentId + {{ question.Id }}" class="form-control" required>
+                                <option value=""></option>
+                                <option *ngFor="let c of composants" [value]="c.Id">
+                                    {{ c.Name }}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="ComponentId.touched && ComponentId.invalid">
+                                Component is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="project">Data Type</label>
+                            <select #DataTypeId="ngModel" name="TypeDonneeId" [(ngModel)]="question.TypeDonneeId" id="TypeDonneeId + {{ question.Id }}" class="form-control" required>
+                                <option value=""></option>
+                                <option *ngFor="let t of dataTypes" [value]="t.Id">
+                                    {{ t.Name }}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="DataTypeId.touched && DataTypeId.invalid">
+                                Data Type is required.
+                            </div>
+                        </div>
+                        <input #idForm="ngModel" name="FormulaireId" [(ngModel)]="question.FormulaireId" id="FormulaireId + {{ question.Id }}" type="text" hidden class="form-control">
+                        <input #Id="ngModel" name="Id" [(ngModel)]="question.Id" id="Id + {{ question.Id }}" type="text" hidden class="form-control">
+                        <button class="btn btn-primary">Save</button>
+                    </form>
+                </div>  
+                <div class="col-md-6">
+                    <div *ngIf="questionOption">
+                        <question-options [references] = "references"></question-options>
+                    </div>
+                </div>             
+            </div>
+        </div>
+    </div>
+</div>

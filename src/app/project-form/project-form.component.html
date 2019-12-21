@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="offset-md-1 col-md-7">
+        <h1>{{ title }}</h1>
+        <form #f="ngForm" (ngSubmit)="save(f.value)">
+            <div class="form-group">
+                <label for="title">Name</label>
+                <input #Name="ngModel" name="name" [(ngModel)]="project.Name" id="name" type="text" class="form-control" required>
+                <div class="alert alert-danger" *ngIf="Name.touched && Name.invalid">
+                    Name is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price">Description</label>
+                <input #description="ngModel" name="description" [(ngModel)]="project.Description" id="description" type="text" class="form-control" required>
+                <div class="alert alert-danger" *ngIf="description.touched && description.invalid">
+                    Description is required.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="domaine">Domaine</label>
+                <select #DomaineId="ngModel" name="DomaineId" [(ngModel)]="project.DomaineId" id="DomaineId" class="form-control" required>
+                    <option value=""></option>
+                    <option *ngFor="let d of domaines" [value]="d.Id">
+                        {{ d.Name }}
+                    </option>
+                </select>
+                <div class="alert alert-danger" *ngIf="DomaineId.touched && DomaineId.invalid">
+                    Domaine is required.
+                </div>
+            </div>
+            <button class="btn btn-primary">{{ textBouton }}</button>
+        </form>
+    </div>
+    
+</div>
