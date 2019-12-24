@@ -1,0 +1,5 @@
+<h1>{{ formulaire.Description }}</h1>
+<div *ngFor="let r of reponses">
+    <reponse (change)="valueChange(r.QuestionId)" [question]="r.Question" [reponse] = "r"></reponse>    
+</div>
+<button (click)="create()" class="btn btn-primary">Save</button>

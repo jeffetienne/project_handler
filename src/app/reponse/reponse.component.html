@@ -1,0 +1,35 @@
+<form #f="ngForm" (ngSubmit)="save(f.value)">
+    <div class="form-group" *ngIf="question.ComponentId == 1">
+        <label for="title">{{ question.Message }}</label>
+        <input matInput #ValeurTextBox="ngModel" 
+            name="valeurTextBox" 
+            [(ngModel)]="reponse.Valeur" 
+            id="valTextBox + {{ reponse.Id }}" 
+            type="text" 
+            class="form-control" 
+            required>           
+        <div class="alert alert-danger" *ngIf="ValeurTextBox.touched && ValeurTextBox.invalid">
+            {{ question.Message }} is required.
+        </div>
+    </div>
+    
+    <div class="form-group" *ngIf="question.ComponentId == 2">
+        <label for="domaine">{{ question.Message }}</label>
+        <select #ValeurComboBox="ngModel" name="ValeurComboBox" [(ngModel)]="reponse.Valeur" id="valComboBox + {{ question.Id }}" class="form-control" required>
+            <option value=""></option>
+            <option *ngFor="let d of references" [value]="d.Code">
+                {{ d.Texte }}
+            </option>
+        </select>
+        <div class="alert alert-danger" *ngIf="ValeurComboBox.touched && ValeurComboBox.invalid">
+            {{ question.Message }} is required.
+        </div>
+    </div>
+    <!--
+    <div class="form-group">
+        <mat-checkbox #required="ngModel" [value]="" name="Required" [checked]="question.Required" [(ngModel)]="question.Required">Required</mat-checkbox>
+    </div>
+    <input #idForm="ngModel" name="FormulaireId" [(ngModel)]="question.FormulaireId" id="FormulaireId + {{ question.Id }}" type="text" hidden class="form-control">
+    <input #Id="ngModel" name="Id" [(ngModel)]="question.Id" id="Id + {{ question.Id }}" type="text" hidden class="form-control">
+    <button class="btn btn-primary">Save</button>-->
+</form>
