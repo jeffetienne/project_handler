@@ -25,7 +25,7 @@
                     <form #f="ngForm" (ngSubmit)="save(f.value)">
                         <div class="form-group">
                             <label for="title">Name</label>
-                            <input #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.Name" id="name + {{ question.Id }}" type="text" class="form-control" required>
+                            <input matInput #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.Name" id="name + {{ question.Id }}" type="text" class="form-control" required>
                             <div class="alert alert-danger" *ngIf="Name.touched && Name.invalid">
                                 Name is required.
                             </div>
@@ -51,15 +51,38 @@
                         </div>
                         <div class="form-group">
                             <label for="project">Data Type</label>
-                            <select #DataTypeId="ngModel" name="TypeDonneeId" [(ngModel)]="question.TypeDonneeId" id="TypeDonneeId + {{ question.Id }}" class="form-control" required>
+                            <select #TypeDonneeId="ngModel" name="TypeDonneeId" [(ngModel)]="question.TypeDonneeId" (change)="getSelectedType()" id="TypeDonneeId + {{ question.Id }}" class="form-control" required>
                                 <option value=""></option>
                                 <option *ngFor="let t of dataTypes" [value]="t.Id">
                                     {{ t.Name }}
                                 </option>
                             </select>
-                            <div class="alert alert-danger" *ngIf="DataTypeId.touched && DataTypeId.invalid">
+                            <div class="alert alert-danger" *ngIf="TypeDonneeId.touched && TypeDonneeId.invalid">
                                 Data Type is required.
                             </div>
+                        </div>
+                        <div class="row" [hidden]="hidden">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Minimum">Minimum</label>
+                                    <input #Min="ngModel" name="Minimum" [(ngModel)]="question.Minimum" id="Minimum + {{ question.Id }}" type="text" class="form-control" required>
+                                    <div class="alert alert-danger" *ngIf="Min.touched && Min.invalid">
+                                        Minimum is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Maximum">Maximum</label>
+                                    <input #Max="ngModel" name="Maximum" [(ngModel)]="question.Maximum" id="Maximum + {{ question.Id }}" type="text" class="form-control">
+                                    <div class="alert alert-danger" *ngIf="Max.touched && Max.invalid">
+                                        Maximum is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <mat-checkbox #required="ngModel" [value]="" name="Required" [checked]="question.Required" [(ngModel)]="question.Required">Required</mat-checkbox>
                         </div>
                         <input #idForm="ngModel" name="FormulaireId" [(ngModel)]="question.FormulaireId" id="FormulaireId + {{ question.Id }}" type="text" hidden class="form-control">
                         <input #Id="ngModel" name="Id" [(ngModel)]="question.Id" id="Id + {{ question.Id }}" type="text" hidden class="form-control">

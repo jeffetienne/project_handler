@@ -22,6 +22,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionOptionsComponent } from './question-options/question-options.component';
+import { MatCheckboxModule } from '@angular/material';
+import { ReponseComponent } from './reponse/reponse.component';
+import { ReponseFormComponent } from './reponse-form/reponse-form.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +37,11 @@ import { QuestionOptionsComponent } from './question-options/question-options.co
     QuestionComponent,
     QuestionsFormComponent,
     QuestionOptionsComponent,
+    ReponseComponent,
+    ReponseFormComponent,
   ],
   imports: [
+    MatCheckboxModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     NgbModule,
@@ -69,6 +75,10 @@ import { QuestionOptionsComponent } from './question-options/question-options.co
       { 
         path: 'edit-formulaire/:id', 
         component: FormulaireComponent 
+      },
+      { 
+        path: 'fill-formulaire/:id', 
+        component: ReponseFormComponent 
       },
       { 
         path: 'view-formulaire/:id', 

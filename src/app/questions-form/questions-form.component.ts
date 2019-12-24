@@ -39,14 +39,14 @@ export class QuestionsFormComponent implements OnInit {
         this.questionService.getQuestionsByForm(this.idForm)
         .subscribe(response => {
           this.questions = response.json();
-          if(this.questions){
+          /*if(this.questions){
             for(let q of this.questions){
               this.questionForm = new QuestionComponent(this.router, this.route, this.composantService, this.dataTypeService, this.questionService, this.dynamicReferenceService);
               this.questionForm.question = q;
               q.FormulaireId = this.idForm;
               this.questionsForm.push(this.questionForm);
             }
-          }
+          }*/
         });
 
         this.formulaireService.getFormulaire(this.idForm)

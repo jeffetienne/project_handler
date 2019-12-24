@@ -25,6 +25,7 @@ export class QuestionComponent implements OnInit {
   idForm: string;
   references: DynamicReference[] = [];
   questionOption: QuestionOptionsComponent;
+  hidden: boolean = true;
   //question: Question = new Question();
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -46,6 +47,12 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {
     if (this.question.Id){
+      if(this.question.TypeDonneeId == 1){
+        this.hidden = false;
+      }
+      else{
+        this.hidden = true;
+      }
       this.dynamicReferenceService.getDynamicReferencesByQuestion(this.question.Id)
       .subscribe(response => {
         this.references = response.json();
@@ -104,7 +111,16 @@ export class QuestionComponent implements OnInit {
       this.questionOption = new QuestionOptionsComponent(this.dynamicReferenceService, this.questionService);
     }
     else{
-      this.questionOption = null;
+      this.questionOption = null;     
+    }
+  }
+
+  getSelectedType(){
+    if(this.question.TypeDonneeId == 1){
+      this.hidden = false;
+    }
+    else{
+      this.hidden = true;
     }
   }
 

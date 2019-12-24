@@ -11,7 +11,10 @@ export class Question{
     Composant: Composant;
     ComponentId: number;
     DataType: DataType;
-    DataTypeId: number;
+    TypeDonneeId: number;
+    Minimum: number;
+    Maximum: number;
+    Required: boolean;
     CreePar: string;
     CreeLe: Date;
 }
