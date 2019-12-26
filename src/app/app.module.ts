@@ -25,6 +25,7 @@ import { QuestionOptionsComponent } from './question-options/question-options.co
 import { MatCheckboxModule } from '@angular/material';
 import { ReponseComponent } from './reponse/reponse.component';
 import { ReponseFormComponent } from './reponse-form/reponse-form.component';
+import { ReponseListComponent } from './reponse-list/reponse-list.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ReponseFormComponent } from './reponse-form/reponse-form.component';
     QuestionOptionsComponent,
     ReponseComponent,
     ReponseFormComponent,
+    ReponseListComponent,
   ],
   imports: [
     MatCheckboxModule,
@@ -79,6 +81,10 @@ import { ReponseFormComponent } from './reponse-form/reponse-form.component';
       { 
         path: 'fill-formulaire/:id', 
         component: ReponseFormComponent 
+      },
+      { 
+        path: 'formulaire-entries/:id', 
+        component: ReponseListComponent 
       },
       { 
         path: 'view-formulaire/:id', 

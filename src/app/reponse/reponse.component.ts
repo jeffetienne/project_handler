@@ -29,7 +29,6 @@ export class ReponseComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.reponse);
     if (this.question) {
       this.dynamicReferenceService.getDynamicReferencesByQuestion(this.question.Id)
         .subscribe(response => {

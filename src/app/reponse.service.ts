@@ -8,7 +8,7 @@ import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 export class ReponseService {
 
   url = 'http://localhost:26922/api/reponse';
-  urlQuest = 'http://localhost:26922/api/reponsesByQuestion';
+  urlQuest = 'http://localhost:26922/api/reponseByQuestion';
   constructor(private http: Http) { }
 
   getReponses(){

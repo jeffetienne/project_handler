@@ -27,7 +27,6 @@ export class ReponseFormComponent implements OnInit {
   
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private composantService: ComposantService,
     private formuliareService: FormulaireService,
     private questionService: QuestionService,
     private reponseService: ReponseService) { 
@@ -58,6 +57,7 @@ export class ReponseFormComponent implements OnInit {
   create(){
     if(this.reponses){
       this.reponses.forEach(r => {
+        r.Question = null;
         this.reponseService.create(r)
         .subscribe(response => {
           

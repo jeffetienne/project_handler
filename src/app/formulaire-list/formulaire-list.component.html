@@ -87,6 +87,14 @@
         [property]="'Id'"
     >
         <ng-template #dataTableCell let-item="item">
+            <a [routerLink]="['/formulaire-entries', item.Id]">Entries</a>
+        </ng-template>
+    </data-table-column>
+
+    <data-table-column
+        [property]="'Id'"
+    >
+        <ng-template #dataTableCell let-item="item">
             <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
         </ng-template>
     </data-table-column>
