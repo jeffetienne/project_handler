@@ -58,6 +58,7 @@ export class ReponseFormComponent implements OnInit {
     if(this.reponses){
       this.reponses.forEach(r => {
         r.Question = null;
+        
         this.reponseService.create(r)
         .subscribe(response => {
           

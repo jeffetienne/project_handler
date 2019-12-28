@@ -9,6 +9,7 @@ export class ReponseService {
 
   url = 'http://localhost:26922/api/reponse';
   urlQuest = 'http://localhost:26922/api/reponseByQuestion';
+  urlForm = 'http://localhost:26922/api/reponsesbyformulaire';
   constructor(private http: Http) { }
 
   getReponses(){
@@ -17,6 +18,10 @@ export class ReponseService {
 
   getReponsesByQuestion(id: number){
     return this.http.get(this.urlQuest + '/' + id);
+  }
+
+  getReponsesByFormulaires(id: number){
+    return this.http.get(this.urlForm + '/' + id);
   }
 
   create(reponse: Reponse){

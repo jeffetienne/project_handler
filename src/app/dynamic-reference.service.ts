@@ -23,6 +23,10 @@ export class DynamicReferenceService {
     return this.http.get(this.urlByQuestion + '/' + idQuestion);
   }
 
+  getDynamicReferencesByCode(idQuestion: number, code: string){
+    return this.http.get(this.urlByQuestion + '/' + idQuestion + '/' + code);
+  }
+
   create(reference: DynamicReference){
     let headerOptions: Headers 
     headerOptions = new Headers({ 'Content-type': 'application/json' });
