@@ -27,11 +27,11 @@
     </div>
 
     <div class="form-group" *ngIf="question.ComponentId == 3">
-        <mat-checkbox #required="ngModel" [value]="" name="Required" [checked]="question.Required"
+        <mat-radio-group #required="ngModel" name="Required"
             [(ngModel)]="question.Required">
             <mat-radio-button value="1">Option 1</mat-radio-button>
             <mat-radio-button value="2">Option 2</mat-radio-button>
-        </mat-checkbox>
+        </mat-radio-group>
     </div>
     
     <div class="form-group" *ngIf="question.ComponentId == 5">
