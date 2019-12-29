@@ -9,7 +9,7 @@
             class="form-control" 
             required="question.Required">           
         <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
-            {{ question.Message }} is required.
+            {{ question.Name }} is required.
         </div>
     </div>
 
@@ -22,18 +22,21 @@
             </option>
         </select>
         <div class="alert alert-danger" *ngIf="question.Required && ValeurComboBox.touched && ValeurComboBox.invalid">
-            {{ question.Message }} is required.
+            {{ question.Name }} is required.
         </div>
     </div>
 
     <div class="form-group" *ngIf="question.ComponentId == 3">
-        <mat-radio-group #required="ngModel" name="Required"
-            [(ngModel)]="question.Required">
-            <mat-radio-button value="1">Option 1</mat-radio-button>
-            <mat-radio-button value="2">Option 2</mat-radio-button>
+        <mat-radio-group #ValeurRadio="ngModel" name="ValeurRadio"
+            [(ngModel)]="reponse.Valeur">
+            <mat-radio-button *ngFor="let d of references" [value]="d.Code">{{ d.Texte }}  </mat-radio-button>          
         </mat-radio-group>
     </div>
-    
+
+    <div class="form-group" *ngIf="question.ComponentId == 4">
+        <mat-checkbox #ValeurCheck="" *ngFor="let d of references" [value]="d.Code" name="#ValeurCheck">{{ d.Texte }}</mat-checkbox>
+    </div>
+
     <div class="form-group" *ngIf="question.ComponentId == 5">
         <label for="title">{{ question.Message }}</label>
         <textarea 
@@ -47,9 +50,25 @@
 
         </textarea>
         <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
-            {{ question.Message }} is required.
+            {{ question.Name }} is required.
         </div>
     </div>
+
+    <div class="form-group" *ngIf="question.ComponentId == 6">
+        <label for="title">{{ question.Message }}</label>
+        <input matInput #ValeurTextBox="ngModel" 
+            name="valeurTextBox" 
+            [(ngModel)]="reponse.Valeur" 
+            id="valTextBox + {{ reponse.Id }}" 
+            type="date" 
+            class="form-control" 
+            required="question.Required">           
+        <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
+            {{ question.Name }} is required.
+        </div>
+    </div>
+    
+    
 
     
 

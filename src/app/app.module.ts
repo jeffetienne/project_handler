@@ -22,10 +22,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionOptionsComponent } from './question-options/question-options.component';
-import { MatCheckboxModule } from '@angular/material';
+import { MatCheckboxModule, MatNativeDateModule, MatIconModule } from '@angular/material';
 import { MatRadioModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material';
 import { ReponseComponent } from './reponse/reponse.component';
 import { ReponseFormComponent } from './reponse-form/reponse-form.component';
 import { ReponseListComponent } from './reponse-list/reponse-list.component';
@@ -50,6 +51,9 @@ import { ReponseListComponent } from './reponse-list/reponse-list.component';
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     NgbModule,
