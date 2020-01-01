@@ -1,0 +1,28 @@
+<h2> Liste des Saisies de {{ formulaire.Description }}</h2>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th *ngFor="let item of keyValueRepHeader | keyvalue">{{ item.key }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let k of keyValueReponses">
+            <td *ngFor="let i of k | keyvalue">
+                <div *ngIf="i.value.Question.ComponentId == 2 || i.value.Question.ComponentId == 3">
+                    {{ i.value.Texte }}
+                </div>
+                <div *ngIf="i.value.Question.ComponentId == 1">
+                    {{ i.value.Valeur }}
+                </div>
+                <div *ngIf="i.value.Question.ComponentId == 4">
+                    <table>
+                        <tbody>
+                            <tr><td>Avengers Endgame</td></tr>
+                            <tr><td>Joker</td></tr>
+                        </tbody>
+                    </table>
+                </div>               
+            </td>
+        </tr>
+    </tbody>
+</table>
