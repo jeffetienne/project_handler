@@ -42,4 +42,21 @@ export class ReponseComponent implements OnInit {
     }
   }
 
+  valeurChoisie(d, $event){
+    if($event.checked){
+      if(!this.reponse.Valeur){
+        this.reponse.Valeur = d.Code;
+      } 
+      else this.reponse.Valeur += '|' + d.Code;
+    }
+    else{
+      if(this.reponse.Valeur.indexOf('|') > 0){
+        this.reponse.Valeur = this.reponse.Valeur.replace('|' + d.Code, '');
+      } 
+      else{
+        this.reponse.Valeur = this.reponse.Valeur.replace(d.Code, '');
+      } 
+    }
+  }
+
 }

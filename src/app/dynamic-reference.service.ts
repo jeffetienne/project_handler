@@ -1,13 +1,14 @@
 import { DynamicReference } from './model/dynamic-reference';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicReferenceService {
-  urlByQuestion = 'http://localhost:26922/api/dynamicreferencebyquestion';
-  url = 'http://localhost:26922/api/dynamicreference';
+  urlByQuestion = Constants.server + ':' + Constants.port + '/api/dynamicreferencebyquestion';
+  url = Constants.server + ':' + Constants.port + '/api/dynamicreference';
 
   constructor(private http: Http) { }
 

@@ -1,3 +1,4 @@
+import { ReponseForm } from './../model/reponse-form';
 import { FormulaireService } from './../formulaire.service';
 import { Formulaire } from './../model/formulaire';
 import { Question } from './../model/question';
@@ -24,6 +25,7 @@ export class ReponseFormComponent implements OnInit {
   id: string;
   idForm: string;
   formulaire: Formulaire = new Formulaire();
+  reponse: ReponseForm;
   
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -56,16 +58,30 @@ export class ReponseFormComponent implements OnInit {
 
   create(){
     if(this.reponses){
-      this.reponses.forEach(r => {
-        r.Question = null;
-        
-        this.reponseService.create(r)
-        .subscribe(response => {
+      this.reponseService.getMaxGroupe()
+      .subscribe(response => {
+        this.reponse = response.json();
+
+        this.reponses.forEach(r => {
+          r.Question = null;
+
+          r.Groupe = this.reponse.Groupe + 1;
+          r.CreeLe = new Date();
+          r.CreePar = 'Concepteur';
           
-        }, error => {
-          alert('Unexpected error: ' + error);
+          this.reponseService.create(r)
+          .subscribe(response => {
+            
+          }, error => {
+            alert('Unexpected error: ' + error);
+          });
         });
+
+      },error => {
+          alert('Unexpected error: ' + error);
       });
+
+      
     }
   }
 

@@ -2,14 +2,15 @@ import { Question } from './model/question';
 import { Http, RequestOptions, Headers, RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
 
-  url = 'http://localhost:26922/api/question';
-  urlForm = 'http://localhost:26922/api/questionsbyformulaire';
+  url = Constants.server + ':' + Constants.port + '/api/question';
+  urlForm = Constants.server + ':' + Constants.port + '/api/questionsbyformulaire';
   constructor(private http: Http) { }
 
   getQuestions(){

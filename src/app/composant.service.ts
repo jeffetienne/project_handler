@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComposantService {
-  private url = 'http://localhost:26922/api/component';
+  private url = Constants.server + ':' + Constants.port + '/api/component';
 
   constructor(private http: Http) { }
 

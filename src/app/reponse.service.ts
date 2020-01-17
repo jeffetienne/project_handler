@@ -1,15 +1,17 @@
 import { Reponse } from './model/reponse';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReponseService {
 
-  url = 'http://localhost:26922/api/reponse';
-  urlQuest = 'http://localhost:26922/api/reponseByQuestion';
-  urlForm = 'http://localhost:26922/api/reponsesbyformulaire';
+  url = Constants.server + ':' + Constants.port + '/api/reponse';
+  urlQuest = Constants.server + ':' + Constants.port + '/api/reponseByQuestion';
+  urlForm = Constants.server + ':' + Constants.port + '/api/reponsesbyformulaire';
+  urlMaxGroupe = Constants.server + ':' + Constants.port + '/api/maxgroupe';
   constructor(private http: Http) { }
 
   getReponses(){
@@ -36,6 +38,10 @@ export class ReponseService {
 
   getReponse(id: number){
     return this.http.get(this.url + '/' + id);
+  }
+
+  getMaxGroupe(){
+    return this.http.get(this.urlMaxGroupe);
   }
 
   update(id: string, reponse: Reponse){

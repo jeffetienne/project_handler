@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataTypeService {
-  private url = 'http://localhost:26922/api/typedonnees';
+  private url = Constants.server + ':' + Constants.port + '/api/typedonnees';
 
   constructor(private http: Http) { }
 

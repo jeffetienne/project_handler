@@ -1,13 +1,14 @@
 import { Formulaire } from './model/formulaire';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormulaireService {
 
-  url = 'http://localhost:26922/api/formulaire';
+  url = Constants.server + ':' + Constants.port + '/api/formulaire';
   constructor(private http: Http) { }
 
   getFormulaires(){

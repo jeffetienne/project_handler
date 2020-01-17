@@ -1,3 +1,4 @@
+import { Constants } from './model/constants';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
@@ -5,16 +6,17 @@ import { Http } from '@angular/http';
   providedIn: 'root'
 })
 export class DomaineService {
-  private url = 'http://localhost:26922/api/domaine';
+  //private url = 'http://192.168.0.165:26922/api/domaine';
 
   constructor(private http: Http) { }
 
   getDomaines(){
-    return this.http.get(this.url);
+    let url = Constants.server + ':' + Constants.port + '/api/domaine'
+    return this.http.get(url);
   }
 
   getDomaine(id: string){
-    let urlDomaine = 'http://localhost:26922/api/domaine/' + id;
+    let urlDomaine = Constants.server + ':' + Constants.port + '/api/domaine/' + id;
     return this.http.get(urlDomaine);
   }
 }

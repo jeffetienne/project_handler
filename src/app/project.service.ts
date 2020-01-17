@@ -2,13 +2,14 @@ import { Project } from './model/project';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestMethod } from '@angular/http';
 import { Headers } from '@angular/http';
+import { Constants } from './model/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-  private url = 'http://localhost:26922/api/projet';
+  private url = Constants.server + ':' + Constants.port + '/api/projet/';
 
   constructor(private http: Http) { }
 

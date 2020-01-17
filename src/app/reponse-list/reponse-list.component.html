@@ -2,12 +2,12 @@
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
-            <th *ngFor="let item of keyValueRepHeader | keyvalue">{{ item.key }}</th>
+            <th *ngFor="let item of keyValueRepHeader | keyvalue : returnZero">{{ item.key }}</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let k of keyValueReponses">
-            <td *ngFor="let i of k | keyvalue">
+            <td *ngFor="let i of k | keyvalue : returnZero">
                 <div *ngIf="i.value.Question.ComponentId == 2 || i.value.Question.ComponentId == 3">
                     {{ i.value.Texte }}
                 </div>
@@ -15,13 +15,20 @@
                     {{ i.value.Valeur }}
                 </div>
                 <div *ngIf="i.value.Question.ComponentId == 4">
-                    <table>
+                    {{ i.value.Valeur }}
+                    <!--<table>
                         <tbody>
                             <tr><td>Avengers Endgame</td></tr>
                             <tr><td>Joker</td></tr>
                         </tbody>
-                    </table>
-                </div>               
+                    </table>-->
+                </div>   
+                <div *ngIf="i.value.Question.ComponentId == 5">
+                    {{ i.value.Valeur }}
+                </div>  
+                <div *ngIf="i.value.Question.ComponentId == 6">
+                    {{ i.value.Valeur }}
+                </div>            
             </td>
         </tr>
     </tbody>
