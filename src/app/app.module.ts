@@ -1,3 +1,5 @@
+import { AngularFireAuth } from 'angularfire2/auth';
+import { environment } from './../environments/environment';
 import { DomaineService } from './domaine.service';
 import { FormTypeService } from './form-type.service';
 import { FormulaireService } from './formulaire.service';
@@ -30,6 +32,11 @@ import { MatDatepickerModule } from '@angular/material';
 import { ReponseComponent } from './reponse/reponse.component';
 import { ReponseFormComponent } from './reponse-form/reponse-form.component';
 import { ReponseListComponent } from './reponse-list/reponse-list.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { from } from 'rxjs';
+import { LoginComponent } from './login/login.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -45,8 +52,12 @@ import { ReponseListComponent } from './reponse-list/reponse-list.component';
     ReponseComponent,
     ReponseFormComponent,
     ReponseListComponent,
+    LoginComponent,
+    SignUpComponent,
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
     MatCheckboxModule,
     MatRadioModule,
     MatFormFieldModule,
@@ -66,6 +77,10 @@ import { ReponseListComponent } from './reponse-list/reponse-list.component';
     RouterModule.forRoot([
       { 
         path: '', 
+        component: LoginComponent 
+      },
+      { 
+        path: 'projet', 
         component: ProjectListComponent 
       },
       { 
@@ -99,6 +114,14 @@ import { ReponseListComponent } from './reponse-list/reponse-list.component';
       { 
         path: 'view-formulaire/:id', 
         component: QuestionsFormComponent 
+      },
+      { 
+        path: 'signUp', 
+        component: SignUpComponent 
+      },
+      { 
+        path: 'login', 
+        component: LoginComponent 
       } 
     ]),
     CollapseModule.forRoot(),
@@ -108,7 +131,8 @@ import { ReponseListComponent } from './reponse-list/reponse-list.component';
     ProjectService,
     FormulaireService,
     FormTypeService,
-    DomaineService
+    DomaineService,
+    AngularFireAuth
   ],
   bootstrap: [AppComponent]
 })
