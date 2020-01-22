@@ -1,3 +1,5 @@
+import { AdminAuthGuardService } from './admin-auth-guard.service';
+import { AuthGuardService } from './auth-guard.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { environment } from './../environments/environment';
 import { DomaineService } from './domaine.service';
@@ -81,39 +83,48 @@ import { SignUpComponent } from './sign-up/sign-up.component';
       },
       { 
         path: 'projet', 
-        component: ProjectListComponent 
+        component: ProjectListComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'new-project', 
-        component: ProjectFormComponent 
+        component: ProjectFormComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'edit-project/:id', 
-        component: ProjectFormComponent 
+        component: ProjectFormComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'formulaires', 
-        component: FormulaireListComponent 
+        component: FormulaireListComponent, 
+        canActivate: [AuthGuardService] 
       },
       { 
         path: 'new-formulaire', 
-        component: FormulaireComponent 
+        component: FormulaireComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'edit-formulaire/:id', 
-        component: FormulaireComponent 
+        component: FormulaireComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'fill-formulaire/:id', 
-        component: ReponseFormComponent 
+        component: ReponseFormComponent, 
+        canActivate: [AuthGuardService] 
       },
       { 
         path: 'formulaire-entries/:id', 
-        component: ReponseListComponent 
+        component: ReponseListComponent, 
+        canActivate: [AuthGuardService] 
       },
       { 
         path: 'view-formulaire/:id', 
-        component: QuestionsFormComponent 
+        component: QuestionsFormComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
         path: 'signUp', 
@@ -132,7 +143,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     FormulaireService,
     FormTypeService,
     DomaineService,
-    AngularFireAuth
+    AngularFireAuth,
+    AuthGuardService,
+    AdminAuthGuardService
   ],
   bootstrap: [AppComponent]
 })

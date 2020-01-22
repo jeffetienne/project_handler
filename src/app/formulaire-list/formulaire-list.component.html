@@ -13,8 +13,12 @@
         [sortable]="'true'"
         [resizable]="'true'"
     >
+        
         <ng-template #dataTableCell let-item="item">
-            <a [routerLink]="['/view-formulaire', item.Id]">{{ item.Name }}</a>
+            <ng-template #normalUser>
+                {{ item.Name }}
+            </ng-template>
+            <a *ngIf="user.isAdmin; else normalUser" [routerLink]="['/view-formulaire', item.Id]">{{ item.Name }}</a>
         </ng-template>
     </data-table-column>
 
@@ -67,13 +71,14 @@
         
     </data-table-column>
 
-    <data-table-column
+        <data-table-column *ngIf="user.isAdmin"
         [property]="'Id'"
-    >
-        <ng-template #dataTableCell let-item="item">
-            <a [routerLink]="['/edit-formulaire', item.Id]">Edit</a>
-        </ng-template>
-    </data-table-column>
+        >
+            <ng-template #dataTableCell let-item="item">
+                <a [routerLink]="['/edit-formulaire', item.Id]">Edit</a>
+            </ng-template>
+        </data-table-column>
+    
 
     <data-table-column
         [property]="'Id'"
@@ -91,11 +96,11 @@
         </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'Id'"
-    >
-        <ng-template #dataTableCell let-item="item">
-            <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
-        </ng-template>
-    </data-table-column>
+        <data-table-column *ngIf="user.isAdmin"
+            [property]="'Id'"
+        >
+            <ng-template #dataTableCell let-item="item">
+                <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
+            </ng-template>
+        </data-table-column>
 </data-table>

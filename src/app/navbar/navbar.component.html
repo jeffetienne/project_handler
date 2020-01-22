@@ -24,22 +24,24 @@
             {{ userO.prenom }} {{ userO.nom }}
           </a>
           <div ngbDropdownMenu class="dropdown-menu show" aria-labelledby="dropdown01">
-            <a class="dropdown-item" routerLink="">
-              Projects
-              <span class="badge badge-warning badge-pill">
-                {{ projects.length }}
-              </span>
-            </a>
+            <ng-container *ngIf="userO.isAdmin">
+              <a class="dropdown-item" routerLink="/domaine">
+                Domaines
+                <span class="badge badge-warning badge-pill">
+                  
+                </span>
+              </a>                
+              <a class="dropdown-item" routerLink="">
+                Projects
+                <span class="badge badge-warning badge-pill">
+                  {{ projects.length }}
+                </span>
+              </a>
+            </ng-container>           
             <a class="dropdown-item" routerLink="/formulaires">
               Formulaires
               <span class="badge badge-warning badge-pill">
                 {{ formulaires.length }}
-              </span>
-            </a>
-            <a class="dropdown-item" routerLink="/domaine">
-              Domaines
-              <span class="badge badge-warning badge-pill">
-                
               </span>
             </a>
             <a class="dropdown-item" (click)="logout()">Log Out</a>

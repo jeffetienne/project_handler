@@ -1,3 +1,7 @@
+import { AngularFireAuth } from 'angularfire2/auth';
+import { UserService } from './../user.service';
+import { User } from './../model/user';
+import { Observable } from 'rxjs';
 import { FormulaireService } from './../formulaire.service';
 import { Formulaire } from './../model/formulaire';
 import { Component, OnInit } from '@angular/core';
@@ -16,8 +20,18 @@ export class FormulaireListComponent implements OnInit {
   FormulaireCount: number;
   formulaires$;
   id;
+  user$: Observable<firebase.User>;
+  user: User = new User();
   
-  constructor(private formulaireService: FormulaireService, private route: ActivatedRoute) { 
+  constructor(private formulaireService: FormulaireService, private route: ActivatedRoute, private userService: UserService, private afAuth: AngularFireAuth) { 
+    this.user$ = this.afAuth.authState;
+    this.user$.subscribe(u => {
+      if(u)
+      this.userService.get(u.uid).valueChanges().subscribe((user: User) => {
+        this.user = user;
+      });
+    });
+
     this.id = this.route.snapshot.paramMap.get('id');
     this.formulaireService.getFormulaires()
     .subscribe(response => {
