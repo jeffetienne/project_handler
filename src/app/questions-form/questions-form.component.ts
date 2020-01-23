@@ -50,8 +50,9 @@ export class QuestionsFormComponent implements OnInit {
         });
 
         this.formulaireService.getFormulaire(this.idForm)
-        .subscribe(response => {
-          this.formulaire = response.json();
+        .valueChanges()
+        .subscribe((formulaire: Formulaire) => {
+          this.formulaire = formulaire;
         });
       }
         

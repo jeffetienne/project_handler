@@ -7,6 +7,7 @@ import { Formulaire } from './../model/formulaire';
 import { Component, OnInit } from '@angular/core';
 import { DataTableResource } from 'angular5-data-table';
 import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-formulaire-list',
@@ -15,13 +16,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FormulaireListComponent implements OnInit {
 
-  formulaires: Formulaire[] = [];
+  items: Formulaire[] = [];
   tableResource: DataTableResource<Formulaire>;
-  FormulaireCount: number;
+  itemCount: number;
   formulaires$;
   id;
   user$: Observable<firebase.User>;
   user: User = new User();
+  subscription;
   
   constructor(private formulaireService: FormulaireService, private route: ActivatedRoute, private userService: UserService, private afAuth: AngularFireAuth) { 
     this.user$ = this.afAuth.authState;
@@ -33,29 +35,35 @@ export class FormulaireListComponent implements OnInit {
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.formulaireService.getFormulaires()
-    .subscribe(response => {
-      this.formulaires = response.json();
-      this.initializeTable(this.formulaires);
-    }, error => {
-      alert('An unexpected error occured: ' + error);
-      console.log(error);
+    this.formulaires$ = this.formulaireService.getFormulaires().snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
     });
+
+    if(this.formulaires$){
+      this.subscription = this.formulaires$
+      .subscribe((formulaires: Formulaire[]) => {
+        this.items = formulaires;
+        this.initializeTable(this.items);
+      }, error => {
+        alert('An unexpected error occured: ' + error);
+        console.log(error);
+      });
+    }
   }
 
   initializeTable(formulaires){
     this.tableResource = new DataTableResource(formulaires);
       this.tableResource.query({ offset: 0 })
-      .then(formulaires => this.formulaires = formulaires);
+      .then(formulaires => this.items = formulaires);
       this.tableResource.count()
-      .then(count => this.FormulaireCount = count);
+      .then(count => this.itemCount = count);
   }
 
-  reloadFormulaires(params){
+  reloadItems(params){
     if (!this.tableResource) return;
     
     this.tableResource.query(params)
-      .then(formulaires => this.formulaires = formulaires);
+      .then(formulaires => this.items = formulaires);
     this.initializeTable(params);
   }
 

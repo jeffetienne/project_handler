@@ -1,3 +1,5 @@
+import { AuthService } from './../auth.service';
+import { UserService } from './../user.service';
 import { Domaine } from './../model/domaine';
 import { jsonpFactory } from '@angular/http/src/http_module';
 import { Project } from './../model/project';
@@ -5,6 +7,10 @@ import { ProjectService } from './../project.service';
 import { DomaineService } from './../domaine.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/take';
+import { Observable } from 'rxjs';
+import { User } from '../model/user';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'project-form',
@@ -13,49 +19,62 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProjectFormComponent implements OnInit {
 
-  domaines: Domaine[]=[];
-  project: Project= new Project();
+  domaines: Domaine[] = [];
+  project: Project = new Project();
   id;
   domaine: Domaine;
   title = "Ajouter un nouveau projet";
-  textBouton = "Ajouter"
+  textBouton = "Ajouter";
+  domaines$;
+  user$: Observable<firebase.User> = new Observable();
+  userO: User = new User();
+  pipe: any;
+
   constructor(private router: Router,
     private route: ActivatedRoute,
     private domaineService: DomaineService,
-    private projectService: ProjectService) {
-    this.domaineService.getDomaines()
-      .subscribe(response => {
-        this.domaines = response.json();
-      });
+    private projectService: ProjectService,
+    private userService: UserService,
+    private auth: AuthService) {
+    /*
+  this.domaineService.getDomaines()
+    .subscribe(response => {
+      this.domaines = response.json();
+    });//*/
 
+    this.domaines$ = this.domaineService.getDomaineFire();
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) this.projectService
       .getProject(this.id)
-      .subscribe(response => {
-        this.title = 'Modifier ce projet'
-        this.textBouton = "Modifier"
-        this.project = response.json();
+      .valueChanges().take(1)
+      .subscribe((p: Project) => {
+        this.project = p;
+        this.textBouton = "Modifier";
+        this.title = "Modification du projet";
       });
   }
-  
+
   save(project: Project) {
 
-    project.CreePar = 'Concepteur';
-    project.CreeLe = new Date();
+    this.auth.user$
+      .subscribe(user => {
+        if (user)
+          this.userService
+            .get(user.uid)
+            .valueChanges()
+            .subscribe((user0: User) => {
+              project.CreePar = user0;
+              let now = Date.now();
+              this.pipe = new DatePipe('en-US');
+              let myFormattedDate = this.pipe.transform(now, 'short');
+              project.CreeLe = myFormattedDate;
 
-    if (this.id){
-      project.Id = this.id;
-      this.projectService.updateProject(this.id, project);
-    } 
-    else this.projectService.createProject(project)
-      .subscribe(response => {
+              if (this.id) this.projectService.updateProject(this.id, project);
+              else this.projectService.createProject(project);
 
-      },
-        error => {
-          alert(error);
-        });
-
-    this.router.navigate(['']);
+              this.router.navigate(['projet']);
+            });
+      });
   }
 
   ngOnInit() {

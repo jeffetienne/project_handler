@@ -1,3 +1,4 @@
+import { User } from './user';
 import { Project } from './project';
 import { FormType } from './form-type';
 export class Formulaire{
@@ -6,8 +7,8 @@ export class Formulaire{
     Description: string;
     FormType: FormType;
     FormTypeId: number;
-    Project: Project;
+    Projet: Project;
     ProjectId: number;
-    CreePar: string;
+    CreePar: User;
     CreeLe: Date
 }

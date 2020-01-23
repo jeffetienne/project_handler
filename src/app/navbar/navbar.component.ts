@@ -17,6 +17,7 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   projects: Project[] = [];
+  projets$;
   formulaires: Formulaire[] = [];
   user$: Observable<firebase.User> = new Observable();
   userO: User = new User();
@@ -29,12 +30,15 @@ export class NavbarComponent implements OnInit {
         this.userO = user;
       });
     });
-    projectService.getProjects().subscribe(response => {
-      this.projects = response.json();
+    this.projets$ = this.projectService.getProjects().valueChanges()
+    .subscribe((projets: Project[]) => {
+      this.projects = projets;
     });
-
-    formulaireService.getFormulaires().subscribe(response => {
-      this.formulaires = response.json();
+    formulaireService
+    .getFormulaires()
+    .valueChanges()
+    .subscribe((formulaires: Formulaire[]) => {
+      this.formulaires = formulaires;
     });
   }
 

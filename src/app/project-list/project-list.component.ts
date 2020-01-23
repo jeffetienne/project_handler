@@ -1,3 +1,6 @@
+import { User } from './../model/user';
+import { AuthService } from './../auth.service';
+import { UserService } from './../user.service';
 import { Project } from './../model/project';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from './../project.service';
@@ -14,47 +17,64 @@ import 'rxjs/add/operator/first';
 })
 export class ProjectListComponent implements OnInit {
 
-  projects: Project[] = [];
+  items: Project[] = [];
   tableResource: DataTableResource<Project>;
-  projectCount: number;
+  itemCount: number;
   projects$;
   id;
   subscription;
-  timerSubscription: Subscription;
+ 
+  constructor(private projectService: ProjectService, 
+    private route: ActivatedRoute, 
+    private userService: UserService,
+    private auth: AuthService) { 
 
-  constructor(private projectService: ProjectService, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) { 
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.projects$ = this.projectService.getProjects();
-    this.subscription = this.projectService.getProjects()
-    .subscribe(response => {
-      this.projects = response.json();
+    this.auth.user$
+      .subscribe(user => {
+        if(user)
+        this.userService.get(user.uid)
+          .valueChanges()
+          .subscribe((user0: User) => {
+            this.projects$ = this.projectService.getProjetByUser(user0.username).snapshotChanges().map(snapshots => {
+              return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+            });
+
+            this.subscription = this.projects$
+              .subscribe(projects => {
+                this.items = projects;
+
+                this.initializeTable(projects);
+              });
+          });
+      });
+      this.id = this.route.snapshot.paramMap.get('id');
       
-      this.initializeTable(this.projects);
-      this.subscribeToData();
-    }, error => {
-      alert('An unexpected error occured.' + error);
-    });
-
+    
+      
   }
 
   initializeTable(projects){
     this.tableResource = new DataTableResource(projects);
       this.tableResource.query({ offset: 0 })
-      .then(projects => this.projects = projects);
+      .then(projects => this.items = projects);
       this.tableResource.count()
-      .then(count => this.projectCount = count);
+      .then(count => this.itemCount = count);
   }
 
-  private subscribeToData(): void {
-    this.timerSubscription = Observable.timer(5000).first().subscribe(() => this.reloadProjects);
-}
-
-  reloadProjects(params){
+  reloadItems(params){
     if (!this.tableResource) return;
     
     this.tableResource.query(params)
-      .then(projects => this.projects = projects);
+      .then(projects => this.items = projects);
     this.initializeTable(params);
+  }
+
+  filter(query: string){
+    let filteredProjects = (query) ? 
+    this.items.filter(p => p.Name.toLowerCase().includes(query.toLowerCase())) :
+    this.items;
+
+    this.reloadItems(filteredProjects);
   }
 
   delete(id: string){
@@ -69,6 +89,5 @@ export class ProjectListComponent implements OnInit {
   ngOnDestroy() {
     // Unsubscribe when the component is destroyed
     this.subscription.unsubscribe();
-    this.timerSubscription.unsubscribe();
   }
 }

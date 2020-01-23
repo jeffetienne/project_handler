@@ -1,3 +1,4 @@
+import { User } from './user';
 import { Domaine } from './domaine';
 
 export class Project{
@@ -6,6 +7,6 @@ export class Project{
     Description: string;
     Domaine: Domaine;
     DomaineId: number;
-    CreePar: string;
+    CreePar: User;
     CreeLe: Date;
  }

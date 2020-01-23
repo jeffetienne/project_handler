@@ -40,9 +40,10 @@ export class ReponseListComponent implements OnInit {
       this.idForm = this.route.snapshot.paramMap.get('id');
 
       if(this.idForm){
-        formulaireService.getFormulaire(this.idForm)
-        .subscribe(response =>{
-          this.formulaire = response.json();
+        this.formulaireService.getFormulaire(this.idForm)
+        .valueChanges()
+        .subscribe((formulaire: Formulaire) => {
+          this.formulaire = formulaire;
         });
         this.reponseService.getReponsesByFormulaires(this.idForm)
         .subscribe(response => {

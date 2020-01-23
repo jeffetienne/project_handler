@@ -3,9 +3,9 @@
     <a routerLink="/new-project" class="btn btn-primary">New Project</a>
 </p>
 <data-table
-    [items]="projects"
-    [itemCount]="projectCount"
-    (reload)="reloadProjects($event)"
+    [items]="items"
+    [itemCount]="itemCount"
+    (reload)="reloadItems($event)"
 >
     <data-table-column
         [property]="'Name'"
@@ -26,14 +26,12 @@
     </data-table-column>
 
     <data-table-column
-        [property]="'Domaine'"
+        [property]="'DomaineId'"
         [header]="'Domaine'"
         [sortable]="'true'"
         [resizable]="'true'"
     >
-        <ng-template #dataTableCell let-item="item">
-            {{ item.Domaine.Name }}
-        </ng-template>
+        
     </data-table-column>
 
     <data-table-column
@@ -55,18 +53,18 @@
     </data-table-column>
 
     <data-table-column
-        [property]="'Id'"
+        [property]="'key'"
     >
         <ng-template #dataTableCell let-item="item">
-            <a [routerLink]="['/edit-project', item.Id]">Edit</a>
+            <a [routerLink]="['/edit-project', item.key]">Edit</a>
         </ng-template>
     </data-table-column>
 
     <data-table-column
-        [property]="'Id'"
+        [property]="'key'"
     >
         <ng-template #dataTableCell let-item="item">
-            <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
+            <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
         </ng-template>
     </data-table-column>
 </data-table>

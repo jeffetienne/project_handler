@@ -29,16 +29,17 @@ export class ReponseFormComponent implements OnInit {
   
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private formuliareService: FormulaireService,
+    private formulaireService: FormulaireService,
     private questionService: QuestionService,
     private reponseService: ReponseService) { 
 
       this.idForm = this.route.snapshot.paramMap.get('id');
 
       if (this.idForm){
-        this.formuliareService.getFormulaire(this.idForm)
-        .subscribe(response => {
-          this.formulaire = response.json();
+        this.formulaireService.getFormulaire(this.idForm)
+        .valueChanges()
+        .subscribe((formulaire: Formulaire) => {
+          this.formulaire = formulaire;
         });
         this.questionService.getQuestionsByForm(this.idForm)
         .subscribe(respone => {

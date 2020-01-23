@@ -3,12 +3,12 @@
     <a routerLink="/new-formulaire" class="btn btn-primary">New Formulaire</a>
 </p>
 <data-table
-    [items]="formulaires"
-    [itemCount]="FormulaireCount"
-    (reload)="reloadFormulaires($event)"
+    [items]="items"
+    [itemCount]="itemCount"
+    (reload)="reloadItems($event)"
 >
     <data-table-column
-        [property]="'Name'"
+        [property]="'name'"
         [header]="'Name'"
         [sortable]="'true'"
         [resizable]="'true'"
@@ -16,14 +16,14 @@
         
         <ng-template #dataTableCell let-item="item">
             <ng-template #normalUser>
-                {{ item.Name }}
+                {{ item.name }}
             </ng-template>
-            <a *ngIf="user.isAdmin; else normalUser" [routerLink]="['/view-formulaire', item.Id]">{{ item.Name }}</a>
+            <a *ngIf="user.isAdmin; else normalUser" [routerLink]="['/view-formulaire', item.key]">{{ item.name }}</a>
         </ng-template>
     </data-table-column>
 
     <data-table-column
-        [property]="'Description'"
+        [property]="'description'"
         [header]="'Description'"
         [sortable]="'true'"
         [resizable]="'true'"
@@ -32,13 +32,13 @@
     </data-table-column>
 
     <data-table-column
-        [property]="'TypeForm'"
+        [property]="'FormType'"
         [header]="'Type'"
         [sortable]="'true'"
         [resizable]="'true'"
     >
         <ng-template #dataTableCell let-item="item">
-            {{ item.TypeForm.Name }}
+            {{ item.FormType.name }}
         </ng-template>
     </data-table-column>
 
@@ -50,7 +50,7 @@
     >
         <ng-template #dataTableCell let-item="item">
             {{ item.Projet.Name }}
-        </ng-template>
+        </ng-template>   
     </data-table-column>
 
     <data-table-column
@@ -59,7 +59,9 @@
         [sortable]="'true'"
         [resizable]="'true'"
     >
-        
+        <ng-template #dataTableCell let-item="item">
+            {{ item.CreePar.nom }}
+        </ng-template>
     </data-table-column>
 
     <data-table-column
@@ -75,7 +77,7 @@
         [property]="'Id'"
         >
             <ng-template #dataTableCell let-item="item">
-                <a [routerLink]="['/edit-formulaire', item.Id]">Edit</a>
+                <a [routerLink]="['/edit-formulaire', item.key]">Edit</a>
             </ng-template>
         </data-table-column>
     
@@ -84,7 +86,7 @@
         [property]="'Id'"
     >
         <ng-template #dataTableCell let-item="item">
-            <a [routerLink]="['/fill-formulaire', item.Id]">Fill out</a>
+            <a [routerLink]="['/fill-formulaire', item.key]">Fill out</a>
         </ng-template>
     </data-table-column>
 
@@ -92,7 +94,7 @@
         [property]="'Id'"
     >
         <ng-template #dataTableCell let-item="item">
-            <a [routerLink]="['/formulaire-entries', item.Id]">Entries</a>
+            <a [routerLink]="['/formulaire-entries', item.key]">Entries</a>
         </ng-template>
     </data-table-column>
 
@@ -100,7 +102,7 @@
             [property]="'Id'"
         >
             <ng-template #dataTableCell let-item="item">
-                <button class="btn btn-link" (click)="delete(item.Id)">Delete</button>
+                <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
             </ng-template>
         </data-table-column>
 </data-table>

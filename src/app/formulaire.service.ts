@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Formulaire } from './model/formulaire';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -9,51 +10,30 @@ import { Constants } from './model/constants';
 export class FormulaireService {
 
   url = Constants.server + ':' + Constants.port + '/api/formulaire';
-  constructor(private http: Http) { }
+  constructor(private http: Http, private db: AngularFireDatabase) { }
 
   getFormulaires(){
-    return this.http.get(this.url);
+    return this.db.list('/formulaires');
+    //return this.http.get(this.url);
   }
 
   getFormulaire(id: string){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/formulaires/' + id);
+  }
+
+  getFormulairesByUser(username: string){
+    return this.db.list('/formulaires', ref => ref.orderByChild('CreePar').equalTo(username));
   }
 
   createFormulaire(formulaire: Formulaire){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Post, headers: headerOptions});
-
-    return this.http.post(this.url, JSON.stringify(formulaire).toString(), requestOptions);
+    this.db.database.ref('/formulaires').push(formulaire);
   }
 
   updateFormulaire(id: string, formulaire: Formulaire){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Put, headers: headerOptions});
-
-    return this.http.put(this.url + '/' + id, JSON.stringify(formulaire).toString(), requestOptions)
-    .subscribe(response => {
-
-    }, error => {
-      alert(error);
-    });
+    this.db.object('/formulaires/' + id).update(formulaire)
   }
 
   deleteFormulaire(id: string){
-
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Delete, headers: headerOptions});
-
-    return this.http.delete(this.url + '/' + id, requestOptions)
-    .subscribe(response => {
-
-    }, error => {
-      alert(error);
-    });
+    return this.db.object('/formulaires/' + id).remove();
   }
 }
