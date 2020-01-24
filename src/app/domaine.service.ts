@@ -17,8 +17,7 @@ export class DomaineService {
   }
 
   getDomaine(id: string){
-    let urlDomaine = Constants.server + ':' + Constants.port + '/api/domaine/' + id;
-    return this.http.get(urlDomaine);
+    return this.db.object('/domaines/' + id);
   }
 
   getDomaineFire(){

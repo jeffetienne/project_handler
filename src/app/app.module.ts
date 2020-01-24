@@ -1,3 +1,4 @@
+import { SharedFormulaireService } from './shared-formulaire.service';
 import { AdminAuthGuardService } from './admin-auth-guard.service';
 import { AuthGuardService } from './auth-guard.service';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -39,6 +40,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { from } from 'rxjs';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { ShareFormulaireComponent } from './share-formulaire/share-formulaire.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     ReponseListComponent,
     LoginComponent,
     SignUpComponent,
+    ShareFormulaireComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -112,6 +115,11 @@ import { SignUpComponent } from './sign-up/sign-up.component';
         canActivate: [AuthGuardService, AdminAuthGuardService] 
       },
       { 
+        path: 'share-formulaire/:id', 
+        component: ShareFormulaireComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService] 
+      },
+      { 
         path: 'fill-formulaire/:id', 
         component: ReponseFormComponent, 
         canActivate: [AuthGuardService] 
@@ -145,7 +153,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     DomaineService,
     AngularFireAuth,
     AuthGuardService,
-    AdminAuthGuardService
+    AdminAuthGuardService,
+    SharedFormulaireService
   ],
   bootstrap: [AppComponent]
 })

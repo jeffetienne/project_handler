@@ -63,14 +63,23 @@ export class ProjectFormComponent implements OnInit {
             .get(user.uid)
             .valueChanges()
             .subscribe((user0: User) => {
+
               project.CreePar = user0;
+              project.username = user0.username;
               let now = Date.now();
               this.pipe = new DatePipe('en-US');
               let myFormattedDate = this.pipe.transform(now, 'short');
               project.CreeLe = myFormattedDate;
 
-              if (this.id) this.projectService.updateProject(this.id, project);
-              else this.projectService.createProject(project);
+              this.domaineService.getDomaine(project.DomaineId.toString())
+                .valueChanges()
+                .subscribe((dom: Domaine) => {
+                  project.Domaine = dom;
+                  if (this.id) this.projectService.updateProject(this.id, project);
+                  else this.projectService.createProject(project);
+                });
+
+
 
               this.router.navigate(['projet']);
             });

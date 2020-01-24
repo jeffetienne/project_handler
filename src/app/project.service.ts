@@ -30,7 +30,7 @@ export class ProjectService {
   }
 
   getProjetByUser(username: string){
-    return this.db.list('/projets', ref => ref.orderByChild('CreePar').equalTo(username));
+    return this.db.list('/projets', ref => ref.orderByChild('CreePar/username').equalTo(username));
   }
 
   updateProject(id: string, project: Project){

@@ -71,6 +71,7 @@ export class FormulaireComponent implements OnInit {
             .valueChanges()
             .subscribe((user0: User) => {
               formulaire.CreePar = user0;
+              formulaire.username = user0.username;
               let now = Date.now();
               this.pipe = new DatePipe('en-US');
               let myFormattedDate = this.pipe.transform(now, 'short');

@@ -8,5 +8,6 @@ export class Project{
     Domaine: Domaine;
     DomaineId: number;
     CreePar: User;
+    username: string;
     CreeLe: Date;
  }

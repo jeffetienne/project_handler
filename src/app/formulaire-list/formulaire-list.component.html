@@ -2,18 +2,9 @@
 <p>
     <a routerLink="/new-formulaire" class="btn btn-primary">New Formulaire</a>
 </p>
-<data-table
-    [items]="items"
-    [itemCount]="itemCount"
-    (reload)="reloadItems($event)"
->
-    <data-table-column
-        [property]="'name'"
-        [header]="'Name'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
-        
+<data-table [items]="items" [itemCount]="itemCount" (reload)="reloadItems($event)">
+    <data-table-column [property]="'name'" [header]="'Name'" [sortable]="'true'" [resizable]="'true'">
+
         <ng-template #dataTableCell let-item="item">
             <ng-template #normalUser>
                 {{ item.name }}
@@ -22,87 +13,59 @@
         </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'description'"
-        [header]="'Description'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
-        
+    <data-table-column [property]="'description'" [header]="'Description'" [sortable]="'true'" [resizable]="'true'">
+
     </data-table-column>
 
-    <data-table-column
-        [property]="'FormType'"
-        [header]="'Type'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
+    <data-table-column [property]="'FormType'" [header]="'Type'" [sortable]="'true'" [resizable]="'true'">
         <ng-template #dataTableCell let-item="item">
             {{ item.FormType.name }}
         </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'Projet'"
-        [header]="'Project'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
+    <data-table-column [property]="'Projet'" [header]="'Project'" [sortable]="'true'" [resizable]="'true'">
         <ng-template #dataTableCell let-item="item">
             {{ item.Projet.Name }}
-        </ng-template>   
+        </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'CreePar'"
-        [header]="'Cree par'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
+    <data-table-column [property]="'CreePar'" [header]="'Cree par'" [sortable]="'true'" [resizable]="'true'">
         <ng-template #dataTableCell let-item="item">
             {{ item.CreePar.nom }}
         </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'CreeLe'"
-        [header]="'Cree Le'"
-        [sortable]="'true'"
-        [resizable]="'true'"
-    >
-        
+    <data-table-column [property]="'CreeLe'" [header]="'Cree Le'" [sortable]="'true'" [resizable]="'true'">
+
     </data-table-column>
 
-        <data-table-column *ngIf="user.isAdmin"
-        [property]="'Id'"
-        >
-            <ng-template #dataTableCell let-item="item">
-                <a [routerLink]="['/edit-formulaire', item.key]">Edit</a>
-            </ng-template>
-        </data-table-column>
-    
+    <data-table-column *ngIf="user.isAdmin" [property]="'Id'">
+        <ng-template #dataTableCell let-item="item">
+            <a [routerLink]="['/edit-formulaire', item.key]">Edit</a>
+        </ng-template>
+    </data-table-column>
 
-    <data-table-column
-        [property]="'Id'"
-    >
+    <data-table-column *ngIf="user.isAdmin" [property]="'Id'">
+        <ng-template #dataTableCell let-item="item">
+            <a [routerLink]="['/share-formulaire', item.key]">Share</a>
+        </ng-template>
+    </data-table-column>
+
+    <data-table-column [property]="'Id'">
         <ng-template #dataTableCell let-item="item">
             <a [routerLink]="['/fill-formulaire', item.key]">Fill out</a>
         </ng-template>
     </data-table-column>
 
-    <data-table-column
-        [property]="'Id'"
-    >
+    <data-table-column [property]="'Id'">
         <ng-template #dataTableCell let-item="item">
             <a [routerLink]="['/formulaire-entries', item.key]">Entries</a>
         </ng-template>
     </data-table-column>
 
-        <data-table-column *ngIf="user.isAdmin"
-            [property]="'Id'"
-        >
-            <ng-template #dataTableCell let-item="item">
-                <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
-            </ng-template>
-        </data-table-column>
+    <data-table-column *ngIf="user.isAdmin" [property]="'Id'">
+        <ng-template #dataTableCell let-item="item">
+            <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
+        </ng-template>
+    </data-table-column>
 </data-table>

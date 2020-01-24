@@ -10,5 +10,6 @@ export class Formulaire{
     Projet: Project;
     ProjectId: number;
     CreePar: User;
+    username: string;
     CreeLe: Date
 }

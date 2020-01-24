@@ -22,7 +22,7 @@ export class FormulaireService {
   }
 
   getFormulairesByUser(username: string){
-    return this.db.list('/formulaires', ref => ref.orderByChild('CreePar').equalTo(username));
+    return this.db.list('/formulaires', ref => ref.orderByChild('CreePar/username').equalTo(username));
   }
 
   createFormulaire(formulaire: Formulaire){

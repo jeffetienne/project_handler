@@ -26,12 +26,14 @@
     </data-table-column>
 
     <data-table-column
-        [property]="'DomaineId'"
+        [property]="'Domaine'"
         [header]="'Domaine'"
         [sortable]="'true'"
         [resizable]="'true'"
     >
-        
+        <ng-template #dataTableCell let-item="item">
+            {{ item.Domaine.name }}
+        </ng-template>
     </data-table-column>
 
     <data-table-column
@@ -40,7 +42,9 @@
         [sortable]="'true'"
         [resizable]="'true'"
     >
-        
+        <ng-template #dataTableCell let-item="item">
+            {{ item.CreePar.nom }}
+        </ng-template>
     </data-table-column>
 
     <data-table-column
