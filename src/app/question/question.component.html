@@ -5,12 +5,12 @@
                 [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" data-toggle="collapse"
                 data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 
-                <div *ngIf="question.Name">
-                    {{ question.Name }} : {{ question.Message }}
+                <div *ngIf="question.name" id="qName">
+                    {{ question.name }} : {{ question.Message }}
                 </div> 
-                <div *ngIf="!question.Name"> Add New Question </div>              
+                <div *ngIf="!question.name"> Add New Question </div>              
             </button>
-            <button type="button" (click)="deleteQuestion()" class="close" aria-label="Close">
+            <button id="qButton" type="button" (click)="deleteQuestion()" class="close" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </h4>
@@ -25,7 +25,7 @@
                     <form #f="ngForm" (ngSubmit)="save(f.value)">
                         <div class="form-group">
                             <label for="title">Name</label>
-                            <input matInput #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.Name" id="name + {{ question.Id }}" type="text" class="form-control" required>
+                            <input matInput #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.name" id="name + {{ question.Id }}" type="text" class="form-control" required>
                             <div class="alert alert-danger" *ngIf="Name.touched && Name.invalid">
                                 Name is required.
                             </div>
@@ -41,8 +41,8 @@
                             <label for="domaine">Component</label>
                             <select #ComponentId="ngModel" (change)="getSelectedValue()" name="ComponentId" [(ngModel)]="question.ComponentId" id="ComponentId + {{ question.Id }}" class="form-control" required>
                                 <option value=""></option>
-                                <option *ngFor="let c of composants" [value]="c.Id">
-                                    {{ c.Name }}
+                                <option *ngFor="let c of composants$ | async" [value]="c.key">
+                                    {{ c.name }}
                                 </option>
                             </select>
                             <div class="alert alert-danger" *ngIf="ComponentId.touched && ComponentId.invalid">
@@ -53,8 +53,8 @@
                             <label for="project">Data Type</label>
                             <select #TypeDonneeId="ngModel" name="TypeDonneeId" [(ngModel)]="question.TypeDonneeId" (change)="getSelectedType()" id="TypeDonneeId + {{ question.Id }}" class="form-control" required>
                                 <option value=""></option>
-                                <option *ngFor="let t of dataTypes" [value]="t.Id">
-                                    {{ t.Name }}
+                                <option *ngFor="let t of typeDonnees$ | async" [value]="t.key">
+                                    {{ t.name }}
                                 </option>
                             </select>
                             <div class="alert alert-danger" *ngIf="TypeDonneeId.touched && TypeDonneeId.invalid">

@@ -1,4 +1,4 @@
-<h2> Liste des Saisies de {{ formulaire.Description }}</h2>
+<h2> Liste des Saisies de {{ formulaire.description }}</h2>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
@@ -9,7 +9,7 @@
         <tr *ngFor="let k of keyValueReponses">
             <td *ngFor="let i of k | keyvalue : returnZero">
                 <div *ngIf="i.value.Question.ComponentId == 2 || i.value.Question.ComponentId == 3">
-                    {{ i.value.Texte }}
+                    {{ i.value.Reference.Texte }}
                 </div>
                 <div *ngIf="i.value.Question.ComponentId == 1">
                     {{ i.value.Valeur }}

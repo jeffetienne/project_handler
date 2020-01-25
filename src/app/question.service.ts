@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Question } from './model/question';
 import { Http, RequestOptions, Headers, RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -9,58 +10,31 @@ import { Constants } from './model/constants';
 })
 export class QuestionService {
 
-  url = Constants.server + ':' + Constants.port + '/api/question';
-  urlForm = Constants.server + ':' + Constants.port + '/api/questionsbyformulaire';
-  constructor(private http: Http) { }
+  constructor(private db: AngularFireDatabase) { }
 
   getQuestions(){
-    return this.http.get(this.url);
+    return this.db.list('/questions');
   }
 
   getQuestionsByForm(idForm: string){
-    return this.http.get(this.urlForm + '/' + idForm);
+    return this.db.list('/questions', ref => ref.orderByChild('FormulaireId').equalTo(idForm));
   }
 
   createQuestion(question: Question){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Post, headers: headerOptions});
-
-    return this.http.post(this.url, JSON.stringify(question).toString(), requestOptions);
+    return this.db.database.ref('/questions').push(question);
     
   }
 
   getQuestion(id: string){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/questions/' + id);
   }
 
   updateQuestion(id: string, question: Question){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Put, headers: headerOptions});
-
-    return this.http.put(this.url + '/' + id, JSON.stringify(question).toString(), requestOptions)
-    .subscribe(response => {
-      alert('Question updated successfully!')
-    }, error => {
-      alert(error);
-    });
+    this.db.object('/questions/' + id).update(question)
   }
 
   delete(id: string){
     
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Delete, headers: headerOptions});
-
-    return this.http.delete(this.url + '/' + id, requestOptions)
-    .subscribe(response => {
-      alert('Question deleted successfully!');
-    }, error => {
-      alert(error);
-    });
+    return this.db.object('/questions/' + id).remove();
   }
 }

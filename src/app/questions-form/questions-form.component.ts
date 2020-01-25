@@ -1,3 +1,5 @@
+import { UserService } from './../user.service';
+import { AuthService } from './../auth.service';
 import { DynamicReferenceService } from './../dynamic-reference.service';
 import { FormulaireService } from './../formulaire.service';
 import { Formulaire } from './../model/formulaire';
@@ -32,13 +34,16 @@ export class QuestionsFormComponent implements OnInit {
     private dataTypeService: DataTypeService,
     private questionService: QuestionService,
     private formulaireService: FormulaireService,
-    private dynamicReferenceService: DynamicReferenceService) {
+    private dynamicReferenceService: DynamicReferenceService,
+    private auth: AuthService,
+    private userService: UserService) {
     
       this.idForm = this.route.snapshot.paramMap.get('id');
       if (this.idForm){
         this.questionService.getQuestionsByForm(this.idForm)
-        .subscribe(response => {
-          this.questions = response.json();
+        .valueChanges()
+        .subscribe((questions: Question[]) => {
+          this.questions = questions;
           /*if(this.questions){
             for(let q of this.questions){
               this.questionForm = new QuestionComponent(this.router, this.route, this.composantService, this.dataTypeService, this.questionService, this.dynamicReferenceService);
@@ -59,7 +64,16 @@ export class QuestionsFormComponent implements OnInit {
   }
 
   addQuestion(){
-    this.questionForm = new QuestionComponent(this.router, this.route, this.composantService, this.dataTypeService, this.questionService, this.dynamicReferenceService);
+    this.questionForm = new QuestionComponent(this.router, 
+      this.route, 
+      this.composantService, 
+      this.dataTypeService, 
+      this.questionService, 
+      this.dynamicReferenceService, 
+      this.auth, 
+      this.userService, 
+      this.formulaireService);
+      
     this.questionForm.idForm = this.idForm;
     this.questionsForm.push(this.questionForm);
     let question: Question = new Question();

@@ -1,3 +1,5 @@
+import { MaxGroup } from './model/max-group';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Reponse } from './model/reponse';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
@@ -8,67 +10,42 @@ import { Constants } from './model/constants';
 })
 export class ReponseService {
 
-  url = Constants.server + ':' + Constants.port + '/api/reponse';
-  urlQuest = Constants.server + ':' + Constants.port + '/api/reponseByQuestion';
-  urlForm = Constants.server + ':' + Constants.port + '/api/reponsesbyformulaire';
-  urlMaxGroupe = Constants.server + ':' + Constants.port + '/api/maxgroupe';
-  constructor(private http: Http) { }
+  constructor(private http: Http, private db: AngularFireDatabase) { }
 
   getReponses(){
-    return this.http.get(this.url);
+    return this.db.list('/reponses');
   }
 
   getReponsesByQuestion(id: number){
-    return this.http.get(this.urlQuest + '/' + id);
+    return this.db.list('/reponses', ref => ref.orderByChild('QuestionId').equalTo(id));
   }
 
   getReponsesByFormulaires(id: number){
-    return this.http.get(this.urlForm + '/' + id);
+    return this.db.list('/reponses', ref => ref.orderByChild('Question/FormulaireId').equalTo(id));
   }
 
   create(reponse: Reponse){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Post, headers: headerOptions});
-
-    return this.http.post(this.url, JSON.stringify(reponse).toString(), requestOptions);
+    return this.db.database.ref('/reponses').push(reponse);
     
   }
 
   getReponse(id: number){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/reponses' + id);
   }
 
   getMaxGroupe(){
-    return this.http.get(this.urlMaxGroupe);
+    return this.db.object('/maxGroup/1');
+  }
+
+  updateMaxGroup(maxGroup: MaxGroup){
+    this.db.object('/maxGroup/1').update(maxGroup);
   }
 
   update(id: string, reponse: Reponse){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Put, headers: headerOptions});
-
-    return this.http.put(this.url + '/' + id, JSON.stringify(reponse).toString(), requestOptions)
-    .subscribe(response => {
-      alert('Reponse updated successfully!')
-    }, error => {
-      alert(error);
-    });
+    this.db.object('/reponses' + id).update(reponse);
   }
 
   delete(id: string){   
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Delete, headers: headerOptions});
-
-    return this.http.delete(this.url + '/' + id, requestOptions)
-    .subscribe(response => {
-      alert('Reponse deleted successfully!');
-    }, error => {
-      alert(error);
-    });
+    this.db.object('/reponses/' + id).remove();
   }
 }

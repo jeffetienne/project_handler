@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Constants } from './model/constants';
@@ -6,15 +7,16 @@ import { Constants } from './model/constants';
   providedIn: 'root'
 })
 export class DataTypeService {
-  private url = Constants.server + ':' + Constants.port + '/api/typedonnees';
-
-  constructor(private http: Http) { }
+  
+  constructor(private db: AngularFireDatabase) { }
 
   getDataTypes(){
-    return this.http.get(this.url);
+    return this.db.list('/typeDonnees').snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });
   }
 
   getDataType(id: string){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/typeDonnees/' + id);
   }
 }

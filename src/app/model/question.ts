@@ -1,10 +1,11 @@
+import { User } from './user';
 import { Formulaire } from './formulaire';
 import { DataType } from './data-type';
 import { Composant } from './component';
 
 export class Question{
-    Id: number;
-    Name: string;
+    Id: string;
+    name: string;
     Description: string;
     Formulaire: Formulaire;
     FormulaireId: string;
@@ -15,6 +16,6 @@ export class Question{
     Minimum: number;
     Maximum: number;
     Required: boolean;
-    CreePar: string;
+    CreePar: User;
     CreeLe: Date;
 }

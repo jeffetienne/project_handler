@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { DynamicReference } from './model/dynamic-reference';
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
@@ -7,33 +8,30 @@ import { Constants } from './model/constants';
   providedIn: 'root'
 })
 export class DynamicReferenceService {
-  urlByQuestion = Constants.server + ':' + Constants.port + '/api/dynamicreferencebyquestion';
-  url = Constants.server + ':' + Constants.port + '/api/dynamicreference';
-
-  constructor(private http: Http) { }
+  
+  constructor(private db: AngularFireDatabase) { }
 
   getDynamicReferences(){
-    return this.http.get(this.url);
+    return this.db.list('/dynamicReferences').snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });
   }
 
   getDynamicReference(id: string){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/dynamicReferences/' + id);
   }
 
-  getDynamicReferencesByQuestion(idQuestion: number){
-    return this.http.get(this.urlByQuestion + '/' + idQuestion);
+  getDynamicReferencesByQuestion(idQuestion: string){
+    return this.db.list('/dynamicReferences/', ref => ref.orderByChild('QuestionId').equalTo(idQuestion)).snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });;
   }
 
-  getDynamicReferencesByCode(idQuestion: number, code: string){
-    return this.http.get(this.urlByQuestion + '/' + idQuestion + '/' + code);
+  getDynamicReferencesByCode(code: string){
+    return this.db.list('/dynamicReferences/', ref => ref.orderByChild('Code').equalTo(code));
   }
 
   create(reference: DynamicReference){
-    let headerOptions: Headers 
-    headerOptions = new Headers({ 'Content-type': 'application/json' });
-    let requestOptions: RequestOptions 
-    requestOptions = new RequestOptions({method: RequestMethod.Post, headers: headerOptions});
-
-    return this.http.post(this.url, JSON.stringify(reference).toString(), requestOptions);
+    this.db.database.ref('/dynamicReferences').push(reference);
   }
 }

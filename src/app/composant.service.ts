@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Constants } from './model/constants';
@@ -6,15 +7,16 @@ import { Constants } from './model/constants';
   providedIn: 'root'
 })
 export class ComposantService {
-  private url = Constants.server + ':' + Constants.port + '/api/component';
-
-  constructor(private http: Http) { }
+  
+  constructor(private db: AngularFireDatabase) { }
 
   getComponents(){
-    return this.http.get(this.url);
+    return this.db.list('/components').snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });
   }
 
   getComponent(id: string){
-    return this.http.get(this.url + '/' + id);
+    return this.db.object('/components/' + id);
   }
 }

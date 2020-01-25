@@ -53,7 +53,6 @@ export class FormulaireListComponent implements OnInit {
         .subscribe((forms: SharedFormulaire[]) =>{
           forms.forEach(form => {
             this.items.push(form.formulaire);
-            console.log(this.items);
           });
         });
       });

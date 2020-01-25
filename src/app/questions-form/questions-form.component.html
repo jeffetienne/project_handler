@@ -1,7 +1,7 @@
-<h1>Questions du formulaire {{ formulaire.Name }}</h1>
+<h1>Questions du formulaire {{ formulaire.name }}</h1>
 <p>
   <button (click)="addQuestion()" class="btn btn-primary">New Question</button>
 </p>
 <div class="accordion" id="accordionExample" *ngFor="let q of questions">
-  <question [question] = "q"></question>
+  <question [question] = "q" [QuestionId] = "q.Id"></question>
 </div>

@@ -7,13 +7,13 @@ import { Http } from '@angular/http';
   providedIn: 'root'
 })
 export class DomaineService {
-  //private url = 'http://192.168.0.165:26922/api/domaine';
-
-  constructor(private http: Http, private db: AngularFireDatabase) { }
+  
+  constructor(private db: AngularFireDatabase) { }
 
   getDomaines(){
-    let url = Constants.server + ':' + Constants.port + '/api/domaine'
-    return this.http.get(url);
+    return this.db.list('/domaines').snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });
   }
 
   getDomaine(id: string){

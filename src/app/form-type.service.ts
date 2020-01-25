@@ -8,7 +8,6 @@ import { Constants } from './model/constants';
 })
 export class FormTypeService {
 
-  url = Constants.server + ':' + Constants.port + '/api/formtype';
   constructor(private db: AngularFireDatabase) { }
 
   getFormTypes(){

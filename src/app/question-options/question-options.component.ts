@@ -12,17 +12,20 @@ export class QuestionOptionsComponent implements OnInit {
 
   @Input('references') references: DynamicReference[] = [];
   @Input('reference') reference: DynamicReference = new DynamicReference();
+  references$;
   idQuestion: number;
 
   constructor(private dynamicReferenceService: DynamicReferenceService, questionService: QuestionService) { 
-    this.getDynamicReferences();
+    //this.getDynamicReferences();
   }
 
   getDynamicReferences(){
+    alert(this.idQuestion);
     if(this.idQuestion)
-      this.dynamicReferenceService.getDynamicReferencesByQuestion(this.idQuestion)
-      .subscribe(response => {
-        this.references = response.json();
+      this.references$ = this.dynamicReferenceService.getDynamicReferencesByQuestion(this.idQuestion.toString());
+      this.references$
+      .subscribe((references: DynamicReference[]) => {
+        this.references = references;
         this.reference = this.references[0];
         
       }, error => {
@@ -32,12 +35,7 @@ export class QuestionOptionsComponent implements OnInit {
 
   saveDynamicReference(reference){
     console.log(this.references);
-    this.dynamicReferenceService.create(reference)
-    .subscribe(response => {
-      
-    }, error => {
-      alert('Error: ' + error);
-    });
+    this.dynamicReferenceService.create(reference);
   }
 
   removeReference(reference){

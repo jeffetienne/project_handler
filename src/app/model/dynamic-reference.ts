@@ -1,3 +1,4 @@
+import { User } from './user';
 import { Question } from './question';
 
 export class DynamicReference{
@@ -5,7 +6,7 @@ export class DynamicReference{
     Code: string;
     Texte: string;
     Question: Question;
-    QuestionId: number;
-    CreePar: string;
+    QuestionId: string;
+    CreePar: User;
     CreeLe: Date;
 }

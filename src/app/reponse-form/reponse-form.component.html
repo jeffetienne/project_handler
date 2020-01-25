@@ -1,4 +1,4 @@
-<h1>{{ formulaire.Description }}</h1>
+<h1>{{ formulaire.description }}</h1>
 <div *ngFor="let r of reponses">
     <reponse (change)="valueChange(r.QuestionId)" [question]="r.Question" [reponse] = "r"></reponse>    
 </div>

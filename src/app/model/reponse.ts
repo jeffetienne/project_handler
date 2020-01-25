@@ -1,3 +1,4 @@
+import { User } from './user';
 import { DynamicReference } from './dynamic-reference';
 import { Question } from './question';
 export class Reponse{
@@ -6,6 +7,7 @@ export class Reponse{
     Valeur: string;
     Question: Question;
     QuestionId: string;
-    CreePar: string;
+    Reference: DynamicReference;
+    CreePar: User;
     CreeLe: Date;
 }

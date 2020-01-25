@@ -46,15 +46,18 @@ export class ReponseListComponent implements OnInit {
           this.formulaire = formulaire;
         });
         this.reponseService.getReponsesByFormulaires(this.idForm)
-        .subscribe(response => {
-          this.reponsesForm = response.json();
+        .valueChanges()
+        .subscribe((rep: Reponse[]) => {
+          this.reponses = rep;
+
           
-          if (this.reponsesForm.length > 0) {
+          
+          if (this.reponses.length > 0) {
             let nombreQuestions: number = 0
-            let questionId: string = this.reponsesForm[0].QuestionId;
+            let questionId: string = this.reponses[0].QuestionId;
 
 
-            this.reponsesForm.forEach(r => {
+            this.reponses.forEach(r => {
 
               if (r.QuestionId == questionId) {
 
@@ -62,24 +65,24 @@ export class ReponseListComponent implements OnInit {
               }
             });
             
-            let nbreQuestions = Math.floor(this.reponsesForm.length / nombreQuestions);
-            let reste = this.reponsesForm.length%nombreQuestions;
+            let nbreQuestions = Math.floor(this.reponses.length / nombreQuestions);
+            let reste = this.reponses.length%nombreQuestions;
 
-            let groupe = this.reponsesForm[0].Groupe;
+            let groupe = this.reponses[0].Groupe;
             let currentGroupe: number = 0;
-            this.reponsesForm.forEach(r => {
+            this.reponses.forEach(r => {
 
               currentGroupe = r.Groupe;
               if(groupe == currentGroupe){
-                this.keyValueRepHeader[r.Question.Name] = r.Valeur;
-                this.keyValueRep[r.Question.Name] = r;
+                this.keyValueRepHeader[r.Question.name] = r.Valeur;
+                this.keyValueRep[r.Question.name] = r;
               }
               else{
                 this.keyValueReponses.push(this.keyValueRep);
                 this.keyValueRep = {};
                 groupe = currentGroupe;
-                this.keyValueRepHeader[r.Question.Name] = r.Valeur;
-                this.keyValueRep[r.Question.Name] = r;
+                this.keyValueRepHeader[r.Question.name] = r.Valeur;
+                this.keyValueRep[r.Question.name] = r;
               }
             });
             
@@ -98,24 +101,24 @@ export class ReponseListComponent implements OnInit {
             
             let n: number = 0;
             for(let k in KeyValueMax){
-              let value: ReponseForm = KeyValueMax[k];
+              let value: Reponse = KeyValueMax[k];
               n++;
               for(let compteur: number = 0; compteur < this.keyValueReponses.length; compteur++)
               {
                 if(n > Object.keys(this.keyValueReponses[compteur]).length){
-                  let val: ReponseForm = new ReponseForm();
+                  let val: Reponse = new Reponse();
                   let q: Question = new Question();
                   q.ComponentId = value.Question.ComponentId;
                   val.Question = q;
-                  val.Texte = 'NA';
+                  //val.Texte = 'NA';
                   val.Valeur = 'NA';
-                  this.keyValueReponses[compteur][value.Question.Name] = val;
+                  this.keyValueReponses[compteur][value.Question.name] = val;
                   
                 }
               }
             }
             /*
-            for (let compteur: number = 0; compteur < this.reponsesForm.length; compteur++) {
+            for (let compteur: number = 0; compteur < this.reponses.length; compteur++) {
               
               this.keyValueRepHeader[this.reponsesForm[compteur].Question.Name] = this.reponsesForm[compteur].Valeur;
               if(this.reponsesForm[compteur].Question.ComponentId == 2 || this.reponsesForm[compteur].Question.ComponentId == 3)

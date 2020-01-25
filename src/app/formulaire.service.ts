@@ -9,8 +9,7 @@ import { Constants } from './model/constants';
 })
 export class FormulaireService {
 
-  url = Constants.server + ':' + Constants.port + '/api/formulaire';
-  constructor(private http: Http, private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) { }
 
   getFormulaires(){
     return this.db.list('/formulaires');

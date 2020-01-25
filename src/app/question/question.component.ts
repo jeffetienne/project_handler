@@ -1,3 +1,8 @@
+import { Formulaire } from './../model/formulaire';
+import { FormulaireService } from './../formulaire.service';
+import { User } from './../model/user';
+import { UserService } from './../user.service';
+import { AuthService } from './../auth.service';
 import { QuestionOptionsComponent } from './../question-options/question-options.component';
 import { DynamicReferenceService } from './../dynamic-reference.service';
 import { DynamicReference } from './../model/dynamic-reference';
@@ -9,6 +14,8 @@ import { ComposantService } from './../composant.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Composant } from '../model/component';
+import { DatePipe } from '@angular/common';
+import { typeSourceSpan } from '@angular/compiler';
 
 @Component({
   selector: 'question',
@@ -19,43 +26,46 @@ export class QuestionComponent implements OnInit {
 
   composants: Composant[] = [];
   dataTypes: DataType[] = [];
+  composants$;
+  typeDonnees$;
   @Input('question') question: Question;
+  @Input('QuestionId') QuestionId: string;
   name: string;
   description: string;
   idForm: string;
   references: DynamicReference[] = [];
+  references$;
   questionOption: QuestionOptionsComponent;
   hidden: boolean = true;
+  pipe: any;
   //question: Question = new Question();
   constructor(private router: Router,
     private route: ActivatedRoute,
     private composantService: ComposantService,
     private dataTypeService: DataTypeService,
     private questionService: QuestionService,
-    private dynamicReferenceService: DynamicReferenceService) { 
+    private dynamicReferenceService: DynamicReferenceService,
+    private auth: AuthService,
+    private userService: UserService,
+    private formulaireService: FormulaireService) { 
 
-      this.composantService.getComponents()
-      .subscribe(response => {
-        this.composants = response.json();
-      });
+      this.composants$ = this.composantService.getComponents();
+      
 
-      this.dataTypeService.getDataTypes()
-      .subscribe(response => {
-        this.dataTypes = response.json();
-      });    
+      this.typeDonnees$ = this.dataTypeService.getDataTypes();    
     }
 
   ngOnInit() {
-    if (this.question.Id){
+    if (this.QuestionId){
       if(this.question.TypeDonneeId == 1){
         this.hidden = false;
       }
       else{
         this.hidden = true;
       }
-      this.dynamicReferenceService.getDynamicReferencesByQuestion(this.question.Id)
-      .subscribe(response => {
-        this.references = response.json();
+      this.references$ = this.dynamicReferenceService.getDynamicReferencesByQuestion(this.QuestionId);
+      this.references$.subscribe((references: DynamicReference[]) => {
+        this.references = references;
         if (this.references.length > 0){
           this.questionOption = new QuestionOptionsComponent(this.dynamicReferenceService, this.questionService);
         }
@@ -74,11 +84,79 @@ export class QuestionComponent implements OnInit {
   }
 
   save(quest: Question){
-    quest.CreePar = 'Concepteur';
-    quest.CreeLe = new Date();
+    this.idForm = this.route.snapshot.paramMap.get('id');
+    this.auth.user$
+    .subscribe(u => {
+      this.userService.get(u.uid)
+      .valueChanges()
+      .subscribe((user: User) => {
+        let now = Date.now();
+        this.pipe = new DatePipe('en-US');
+        let myFormattedDate = this.pipe.transform(now, 'short');
+        quest.CreePar = user;
+        this.question.CreePar = user;
+        quest.CreeLe = myFormattedDate;
+        this.question.CreeLe = myFormattedDate;
+        if(!quest.Minimum) {
+          quest.Minimum =0;
+          this.question.Minimum = 0;
+        }
+        this.question.Minimum = quest.Minimum;
+        if(!quest.Maximum) {
+          quest.Maximum =0;
+          this.question.Maximum = 0;
+        }
+        this.question.Maximum = quest.Maximum;
+        if(!quest.Required) {
+          quest.Required = false;
+          this.question.Required = false;
+        }
+        this.question.Required = quest.Required;
+        quest.Id = "0";
+        
+        this.formulaireService.getFormulaire(this.idForm)
+        .valueChanges()
+        .subscribe((form: Formulaire) => {
+          quest.Formulaire = form;
+          this.question.Formulaire = form;
+          this.composantService.getComponent(quest.ComponentId.toString())
+          .valueChanges()
+          .subscribe((component: Composant) => {
+            quest.Composant = component;
+            this.question.Composant = component;
+            this.dataTypeService.getDataType(quest.TypeDonneeId.toString())
+            .valueChanges()
+            .subscribe((type: DataType) => {
+              quest.DataType = type;
+              this.question.DataType = type;
+              let ref = this.questionService.createQuestion(quest);
+              if(ref){
+                this.questionService.getQuestion(ref.key)
+                .valueChanges()
+                .subscribe((question: Question) => {
+                  question.Id = ref.key;
+                  this.questionService.updateQuestion(ref.key, question);
+                  
+                });
+                this.question.Id = ref.key;
+                console.log(this.question);
+                this.references.forEach(r => {
+                  r.CreePar = user;
+                  r.CreeLe = myFormattedDate;
+                  r.QuestionId = this.question.Id;
+                  r.Question = this.question;
+                  this.dynamicReferenceService.create(r);
+                });
+              }
+
+            });
+          });
+        });
+      });
+    });
+    /*
     if (!this.question.Id) {
       this.questionService.createQuestion(quest)
-        .map(response => response.json())
         .subscribe((response: Question) => {
           this.references.forEach(r => {
             r.CreePar = 'Concepteur';
@@ -102,7 +180,7 @@ export class QuestionComponent implements OnInit {
       this.question.DataType = null;
       this.questionService.updateQuestion(this.question.Id.toString(), this.question);
       this.router.navigate(['/view-formulaire/' + quest.FormulaireId]);
-    }
+    }//*/
     
   }
 

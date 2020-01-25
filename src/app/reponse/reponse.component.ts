@@ -16,6 +16,7 @@ export class ReponseComponent implements OnInit {
 
   @Input('reponse') reponse: Reponse = new Reponse();
   @Input('question') question: Question;
+  references$;
 
   references: DynamicReference[] = [];
   constructor(private router: Router,
@@ -30,15 +31,8 @@ export class ReponseComponent implements OnInit {
 
   ngOnInit() {
     if (this.question) {
-      this.dynamicReferenceService.getDynamicReferencesByQuestion(this.question.Id)
-        .subscribe(response => {
-          this.references = response.json();
-          if(this.references){
-            //alert('hello');
-          }
-        }, error => {
-          alert('Unexpected error: ' + error);
-      });
+      this.references$ = this.dynamicReferenceService.getDynamicReferencesByQuestion(this.question.Id.toString());
+        
     }
   }
 
