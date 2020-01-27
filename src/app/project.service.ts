@@ -10,8 +10,7 @@ import { Constants } from './model/constants';
 })
 export class ProjectService {
 
-  private url = Constants.server + ':' + Constants.port + '/api/projet/';
-
+ 
   constructor(private http: Http, private db: AngularFireDatabase) { }
 
   getProjects(){

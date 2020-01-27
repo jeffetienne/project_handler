@@ -1,9 +1,10 @@
 import { MaxGroup } from './model/max-group';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Reponse } from './model/reponse';
-import { Injectable } from '@angular/core';
+import { Injectable, Directive } from '@angular/core';
 import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 import { Constants } from './model/constants';
+import { Directionality } from '@angular/cdk/bidi';
 
 @Injectable({
   providedIn: 'root'
@@ -29,16 +30,29 @@ export class ReponseService {
     
   }
 
+  getLastReponse(){
+    return this.db.list('/reponses', ref => ref.limitToLast(1));
+  }
   getReponse(id: number){
-    return this.db.object('/reponses' + id);
+    return this.db.object('/reponses/' + id);
   }
 
   getMaxGroupe(){
-    return this.db.object('/maxGroup/1');
+    return this.db.list('/maxGroup').snapshotChanges().map(snapshots => {
+      return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
+    });
+  }
+
+  createMax(max: MaxGroup){
+    return this.db.database.ref('/maxGroup').push(max);  
   }
 
   updateMaxGroup(maxGroup: MaxGroup){
-    this.db.object('/maxGroup/1').update(maxGroup);
+    this.db.object('/maxGroup/1').set(maxGroup.valeur);
+  }
+
+  deleteMax(id: string){   
+    this.db.object('/maxGroup/' + id).remove();
   }
 
   update(id: string, reponse: Reponse){

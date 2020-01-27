@@ -139,7 +139,6 @@ export class QuestionComponent implements OnInit {
                   
                 });
                 this.question.Id = ref.key;
-                console.log(this.question);
                 this.references.forEach(r => {
                   r.CreePar = user;
                   r.CreeLe = myFormattedDate;

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { DynamicReferenceService } from './../dynamic-reference.service';
 import { User } from './../model/user';
 import { UserService } from './../user.service';
@@ -9,7 +10,7 @@ import { Formulaire } from './../model/formulaire';
 import { Question } from './../model/question';
 import { ReponseService } from './../reponse.service';
 import { ReponseComponent } from './../reponse/reponse.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnDestroy } from '@angular/core';
 import { Reponse } from '../model/reponse';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ComposantService } from '../composant.service';
@@ -23,11 +24,14 @@ import { DynamicReference } from '../model/dynamic-reference';
   templateUrl: './reponse-form.component.html',
   styleUrls: ['./reponse-form.component.css']
 })
-export class ReponseFormComponent implements OnInit {
+export class ReponseFormComponent implements OnInit, OnDestroy {
+
+  @Input("value") keyMax: string;
 
   reponsesForm: ReponseFormComponent[] = [];
   reponseForm: ReponseComponent;
   reponses: Reponse[] = [];
+  maxReponses: Reponse[] = [];
   questions: Question[] = [];
   id: string;
   idForm: string;
@@ -35,9 +39,13 @@ export class ReponseFormComponent implements OnInit {
   reponse: Reponse = new Reponse();
   questions$;
   maxGroupe: MaxGroup = new MaxGroup();
+  maxGroup$
   pipe: any;
   user: User = new User();
   myFormattedDate
+  idMax: string;
+  max: number = 0;
+  Subscription: Subscription;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -48,6 +56,10 @@ export class ReponseFormComponent implements OnInit {
     private auth: AngularFireAuth,
     private userService: UserService) {
 
+
+  }
+
+  ngOnInit() {
     this.idForm = this.route.snapshot.paramMap.get('id');
 
     if (this.idForm) {
@@ -59,70 +71,69 @@ export class ReponseFormComponent implements OnInit {
       this.questions$ = this.questionService.getQuestionsByForm(this.idForm).valueChanges();
       this.questions$.subscribe((questions: Question[]) => {
         this.questions = questions;
+
+        this.maxGroup$ = this.reponseService.getMaxGroupe();
         this.questions.forEach(q => {
           let r = new Reponse()
           r.QuestionId = q.Id.toString();
           r.Question = q;
+          //r.Groupe = rep[0].valeur;
           this.reponses.push(r);
         });
       });
     }
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    //this.Subscription.unsubscribe();
   }
 
   create() {
+
+
+
+    //alert(this.keyMax);
     if (this.reponses) {
-      this.reponseService.getMaxGroupe()
-        .valueChanges()
-        .subscribe((maxgroup: MaxGroup) => {
-          this.maxGroupe = maxgroup;
-          let max: number = this.maxGroupe.valeur;
-          //this.maxGroupe.valeur++;
-          //this.reponseService.updateMaxGroup(this.maxGroupe);
+      let maxkey: HTMLInputElement = <HTMLInputElement>document.getElementById('keyMax');
+      let maxValue: HTMLInputElement = <HTMLInputElement>document.getElementById('valMax');
 
-          this.auth.user.subscribe(u => {
-            this.userService.get(u.uid)
-              .valueChanges()
-              .subscribe((user: User) => {
-                this.user = user;
+      let valMax: number;
+      valMax = +maxValue.value;
+      valMax++;
 
-                let now = Date.now();
-                this.pipe = new DatePipe('en-US');
-                this.myFormattedDate = this.pipe.transform(now, 'short');
+      this.maxGroupe.valeur = valMax;
 
-                this.reponses.forEach(r => {
-                  //r.Question = null;
+      this.reponseService.createMax(this.maxGroupe);
+      this.reponseService.deleteMax(maxkey.value);
+      
+      this.auth.user.subscribe(u => {
+        this.userService.get(u.uid)
+          .valueChanges()
+          .subscribe((user: User) => {
+            this.user = user;
 
-                  r.Groupe = max;
-                  r.CreeLe = this.myFormattedDate;
-                  r.CreePar = user;
+            let now = Date.now();
+            this.pipe = new DatePipe('en-US');
+            this.myFormattedDate = this.pipe.transform(now, 'short');
 
-                  if(r.Question.ComponentId == 2 || r.Question.ComponentId == 3)
-                  {
-                    this.dynamicReferenceService.getDynamicReferencesByCode(r.Valeur)
-                    .valueChanges()
-                    .subscribe((references: DynamicReference[]) => {
-                      r.Reference = references[0];
-                      this.reponseService.create(r);
-                    });
-                  }else this.reponseService.create(r);
+            this.reponses.forEach(r => {
+              //r.Question = null;
 
-                  
-                  //r.Reference = this.reponse.Reference;
+              r.CreeLe = this.myFormattedDate;
+              r.CreePar = user;
 
-                  
-
-                });
-              });
+              r.Groupe = +maxValue.value;
+              if (r.Question.ComponentId == 2 || r.Question.ComponentId == 3) {
+                this.dynamicReferenceService.getDynamicReferencesByCode(r.Valeur)
+                  .valueChanges()
+                  .subscribe((references: DynamicReference[]) => {
+                    r.Reference = references[0];
+                    this.reponseService.create(r);
+                  });
+              } else this.reponseService.create(r);
+            });
           });
-
-
-
-        });
-
-
+      });
     }
   }
 
