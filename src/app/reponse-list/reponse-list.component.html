@@ -1,10 +1,10 @@
-<h2> Liste des Saisies de {{ formulaire.description }}</h2>
+<h2> Entries list of {{ formulaire.description }}</h2>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
             <th *ngFor="let item of keyValueRepHeader | keyvalue : returnZero">{{ item.key }}</th>
-            <th>Cree par</th>
-            <th>Cree le</th>
+            <th>Filled by</th>
+            <th>Filled date</th>
         </tr>
     </thead>
     <tbody>

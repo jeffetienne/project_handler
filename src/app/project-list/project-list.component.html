@@ -1,4 +1,4 @@
-<h1>Liste des projets</h1>
+<h1>Projects list</h1>
 <p>
     <a routerLink="/new-project" class="btn btn-primary">New Project</a>
 </p>
@@ -9,7 +9,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Domaine</th>
+            <th>Domain</th>
             <th>Cree par</th>
             <th>Cree le</th>
             <th></th>
@@ -19,10 +19,10 @@
     <tbody>
         <tr *ngFor="let item of projects$ | async">
             <td>
-                {{ item.name }}
+                {{ item.Name }}
             </td>
             <td>
-                {{ item.description }}
+                {{ item.Description }}
             </td>
             <td>
                 {{ item.Domaine.name }}

@@ -34,7 +34,7 @@ export class ProjectListComponent implements OnInit {
         this.userService.get(user.uid)
           .valueChanges()
           .subscribe((user0: User) => {
-            this.projects$ = this.projectService.getProjetByUser(user0.username).snapshotChanges().map(snapshots => {
+            this.projects$ = this.projectService.getProjects().snapshotChanges().map(snapshots => {
               return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
             });
 

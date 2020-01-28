@@ -51,8 +51,8 @@ export class FormulaireComponent implements OnInit {
       .getFormulaire(this.id)
       .valueChanges()
       .subscribe((formulaire: Formulaire) => {
-        this.title = 'Modifier ce formulaire'
-        this.textBouton = "Modifier"
+        this.title = 'Modify this form'
+        this.textBouton = "Modify"
         this.formulaire = formulaire;
       });
   }

@@ -23,8 +23,8 @@ export class ProjectFormComponent implements OnInit {
   project: Project = new Project();
   id;
   domaine: Domaine;
-  title = "Ajouter un nouveau projet";
-  textBouton = "Ajouter";
+  title = "Adding a new project";
+  textBouton = "Save";
   domaines$;
   user$: Observable<firebase.User> = new Observable();
   userO: User = new User();
@@ -49,8 +49,8 @@ export class ProjectFormComponent implements OnInit {
       .valueChanges().take(1)
       .subscribe((p: Project) => {
         this.project = p;
-        this.textBouton = "Modifier";
-        this.title = "Modification du projet";
+        this.textBouton = "Modify";
+        this.title = "Modification of the project";
       });
   }
 
