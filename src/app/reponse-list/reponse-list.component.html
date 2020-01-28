@@ -3,10 +3,12 @@
     <thead class="thead-dark">
         <tr>
             <th *ngFor="let item of keyValueRepHeader | keyvalue : returnZero">{{ item.key }}</th>
+            <th>Cree par</th>
+            <th>Cree le</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let k of keyValueReponses">
+        <tr *ngFor="let k of keyValueReponses; let compteur = index" [attr.data-index]="compteur">
             <td *ngFor="let i of k | keyvalue : returnZero">
                 <div *ngIf="i.value.Question.ComponentId == 2 || i.value.Question.ComponentId == 3">
                     {{ i.value.Reference.Texte }}
@@ -30,6 +32,7 @@
                     {{ i.value.Valeur }}
                 </div>            
             </td>
+            <td *ngFor="let i of keyValueUsers[compteur] | keyvalue : returnZero">{{ i.value }}</td>
         </tr>
     </tbody>
 </table>

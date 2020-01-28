@@ -23,6 +23,8 @@ export class ReponseListComponent implements OnInit {
   reponses: Reponse[] = [];
   reponsesForm: ReponseForm[] = [];
   keyValueRep = {};
+  keyValueUser = {};
+  keyValueUsers = [];
   keyValueRepHeader = {};
   keyValueReponses = [];
   formulaire: Formulaire = new Formulaire();
@@ -69,24 +71,33 @@ export class ReponseListComponent implements OnInit {
             let reste = this.reponses.length%nombreQuestions;
 
             let groupe = this.reponses[0].Groupe;
+            
             let currentGroupe: number = 0;
+            this.keyValueReponses = [];
             this.reponses.forEach(r => {
 
               currentGroupe = r.Groupe;
               if(groupe == currentGroupe){
                 this.keyValueRepHeader[r.Question.name] = r.Valeur;
                 this.keyValueRep[r.Question.name] = r;
+                this.keyValueUser["CreePar"] = r.CreePar.nom;
+                this.keyValueUser["CreeLe"] = r.CreeLe;
               }
               else{
                 this.keyValueReponses.push(this.keyValueRep);
+                this.keyValueUsers.push(this.keyValueUser);
                 this.keyValueRep = {};
+                this.keyValueUser = {};
                 groupe = currentGroupe;
                 this.keyValueRepHeader[r.Question.name] = r.Valeur;
                 this.keyValueRep[r.Question.name] = r;
+                this.keyValueUser["CreePar"] = r.CreePar.nom;
+                this.keyValueUser["CreeLe"] = r.CreeLe;
               }
             });
             
             this.keyValueReponses.push(this.keyValueRep);
+            this.keyValueUsers.push(this.keyValueUser)
 
             let KeyValueMax;
 

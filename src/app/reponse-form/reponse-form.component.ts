@@ -128,9 +128,13 @@ export class ReponseFormComponent implements OnInit, OnDestroy {
                   .valueChanges()
                   .subscribe((references: DynamicReference[]) => {
                     r.Reference = references[0];
-                    this.reponseService.create(r);
+                    this.reponseService.create(r).then(result => {
+                      this.router.navigateByUrl('/formulaire-entries/' + this.idForm);
+                    });
                   });
-              } else this.reponseService.create(r);
+              } else this.reponseService.create(r).then(result => {
+                this.router.navigateByUrl('/formulaire-entries/' + this.idForm);
+              });
             });
           });
       });
