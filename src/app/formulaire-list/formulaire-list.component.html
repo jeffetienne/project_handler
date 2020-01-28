@@ -2,6 +2,106 @@
 <p>
     <a routerLink="/new-formulaire" class="btn btn-primary">New Formulaire</a>
 </p>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Projet</th>
+            <th>Cree par</th>
+            <th>Cree le</th>
+            <th *ngIf="user.isAdmin"></th>
+            <th *ngIf="user.isAdmin"></th>
+            <th></th>
+            <th></th>
+            <th *ngIf="user.isAdmin"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of formulaires$ | async">
+            <td>
+                <ng-template #normalUser>
+                    {{ item.name }}
+                </ng-template>
+                <a *ngIf="user.isAdmin; else normalUser" [routerLink]="['/view-formulaire', item.key]">{{ item.name }}</a>
+            </td>
+            <td>
+                {{ item.description }}
+            </td>
+            <td>
+                {{ item.FormType.name }}
+            </td>
+            <td>
+                {{ item.Projet.Name }}
+            </td>
+            <td>
+                {{ item.CreePar.nom }}
+            </td>
+            <td>
+                {{ item.CreeLe }}
+            </td>
+            <td *ngIf="user.isAdmin">
+                <a [routerLink]="['/edit-formulaire', item.key]">Edit</a>
+            </td>
+            <td *ngIf="user.isAdmin">
+                <a [routerLink]="['/share-formulaire', item.key]">Share</a>
+            </td>
+            <td>
+                <a [routerLink]="['/fill-formulaire', item.key]">Fill out</a>
+            </td>
+            <td>
+                <a [routerLink]="['/formulaire-entries', item.key]">Entries</a>
+            </td>
+            <td *ngIf="user.isAdmin">
+                <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
+            </td>
+        </tr>
+
+        <tr *ngFor="let item of sharedFormulaires">
+            <td>
+                <ng-template #normalUser>
+                    {{ item.formulaire.name }}
+                </ng-template>
+                <a *ngIf="user.isAdmin; else normalUser" [routerLink]="['/view-formulaire', item.formulaireId]">{{ item.formulaire.name }}</a>
+            </td>
+            <td>
+                {{ item.formulaire.description }}
+            </td>
+            <td>
+                {{ item.formulaire.FormType.name }}
+            </td>
+            <td>
+                {{ item.formulaire.Projet.Name }}
+            </td>
+            <td>
+                {{ item.formulaire.CreePar.nom }}
+            </td>
+            <td>
+                {{ item.formulaire.CreeLe }}
+            </td>
+            <td *ngIf="user.isAdmin">
+                <a [routerLink]="['/edit-formulaire', item.formulaireId]">Edit</a>
+            </td>
+            <td *ngIf="user.isAdmin">
+                <a [routerLink]="['/share-formulaire', item.formulaireId]">Share</a>
+            </td>
+            <td>
+                <a [routerLink]="['/fill-formulaire', item.formulaireId]">Fill out</a>
+            </td>
+            <td>
+                <a [routerLink]="['/formulaire-entries', item.formulaireId]">Entries</a>
+            </td>
+            <td *ngIf="user.isAdmin">
+                <button class="btn btn-link" (click)="delete(item.formulaireId)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!--
 <data-table [items]="items" [itemCount]="itemCount" (reload)="reloadItems($event)">
     <data-table-column [property]="'name'" [header]="'Name'" [sortable]="'true'" [resizable]="'true'">
 
@@ -68,4 +168,4 @@
             <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
         </ng-template>
     </data-table-column>
-</data-table>
+</data-table>-->

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" routerLink="">Project Handler</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
@@ -21,7 +21,7 @@
         
         <li *ngIf="user$ | async as user; else anonymousUser" ngbDropdown class="nav-item dropdown show">
           <a ngbDropdownToggle class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ userO.prenom }} {{ userO.nom }}
+            {{ userO.nom }}
           </a>
           <div ngbDropdownMenu class="dropdown-menu show" aria-labelledby="dropdown01">
             <ng-container *ngIf="userO.isAdmin">

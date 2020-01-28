@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { FormulaireService } from './../formulaire.service';
 import { Formulaire } from './../model/formulaire';
 import { Component, OnInit } from '@angular/core';
-import { DataTableResource } from 'angular5-data-table';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/map';
 
@@ -18,13 +17,14 @@ import 'rxjs/add/operator/map';
 })
 export class FormulaireListComponent implements OnInit {
 
-  items: Formulaire[] = [];
-  tableResource: DataTableResource<Formulaire>;
-  itemCount: number;
-  formulaires$;
-  id;
-  user$: Observable<firebase.User>;
-  user: User = new User();
+  public items: Formulaire[] = [];
+  //public tableResource: DataTableResource<Formulaire>;
+  public itemCount: number;
+  public formulaires$;
+  public sharedFormulaires: SharedFormulaire[] = [];
+  public id;
+  public user$: Observable<firebase.User>;
+  public user: User = new User();
   subscription;
   
   constructor(private formulaireService: FormulaireService, private route: ActivatedRoute, private userService: UserService, private afAuth: AngularFireAuth, private sharedFormulaireService: SharedFormulaireService) { 
@@ -37,6 +37,7 @@ export class FormulaireListComponent implements OnInit {
           return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
         });
     
+        /*
         if(this.formulaires$){
           this.subscription = this.formulaires$
           .subscribe((formulaires: Formulaire[]) => {
@@ -46,14 +47,12 @@ export class FormulaireListComponent implements OnInit {
             alert('An unexpected error occured: ' + error);
             console.log(error);
           });
-        }
+        }*/
 
         this.sharedFormulaireService.getSharedFormulairesByUser(this.user.username)
         .valueChanges()
         .subscribe((forms: SharedFormulaire[]) =>{
-          forms.forEach(form => {
-            this.items.push(form.formulaire);
-          });
+          this.sharedFormulaires = forms;
         });
       });
     });
@@ -62,6 +61,7 @@ export class FormulaireListComponent implements OnInit {
     
   }
 
+  /*
   initializeTable(formulaires){
     this.tableResource = new DataTableResource(formulaires);
       this.tableResource.query({ offset: 0 })
@@ -76,7 +76,7 @@ export class FormulaireListComponent implements OnInit {
     this.tableResource.query(params)
       .then(formulaires => this.items = formulaires);
     this.initializeTable(params);
-  }
+  }*/
 
   delete(id: string){
     if (!confirm('Do you really want to delete this formulaire?')) return;

@@ -110,7 +110,7 @@ export class ReponseListComponent implements OnInit {
                   let q: Question = new Question();
                   q.ComponentId = value.Question.ComponentId;
                   val.Question = q;
-                  //val.Texte = 'NA';
+                  val.Texte = 'NA';
                   val.Valeur = 'NA';
                   this.keyValueReponses[compteur][value.Question.name] = val;
                   

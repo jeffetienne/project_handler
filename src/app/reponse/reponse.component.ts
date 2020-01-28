@@ -39,16 +39,16 @@ export class ReponseComponent implements OnInit {
   valeurChoisie(d, $event){
     if($event.checked){
       if(!this.reponse.Valeur){
-        this.reponse.Valeur = d.Code;
+        this.reponse.Valeur = d.Texte;
       } 
-      else this.reponse.Valeur += '|' + d.Code;
+      else this.reponse.Valeur += '|' + d.Texte;
     }
     else{
       if(this.reponse.Valeur.indexOf('|') > 0){
-        this.reponse.Valeur = this.reponse.Valeur.replace('|' + d.Code, '');
+        this.reponse.Valeur = this.reponse.Valeur.replace('|' + d.Texte, '');
       } 
       else{
-        this.reponse.Valeur = this.reponse.Valeur.replace(d.Code, '');
+        this.reponse.Valeur = this.reponse.Valeur.replace(d.Texte, '');
       } 
     }
   }

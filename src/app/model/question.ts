@@ -6,7 +6,7 @@ import { Composant } from './component';
 export class Question{
     Id: string;
     name: string;
-    Description: string;
+    Message: string;
     Formulaire: Formulaire;
     FormulaireId: string;
     Composant: Composant;

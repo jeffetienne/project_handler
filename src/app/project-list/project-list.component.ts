@@ -5,7 +5,6 @@ import { Project } from './../model/project';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectService } from './../project.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { DataTableResource } from 'angular5-data-table';
 import { Observable, timer, Subscription } from 'rxjs';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
@@ -17,11 +16,11 @@ import 'rxjs/add/operator/first';
 })
 export class ProjectListComponent implements OnInit {
 
-  items: Project[] = [];
-  tableResource: DataTableResource<Project>;
-  itemCount: number;
-  projects$;
-  id;
+  public items: Project[] = [];
+  //public tableResource: DataTableResource<Project>;
+  public itemCount: number;
+  public projects$;
+  public id;
   subscription;
  
   constructor(private projectService: ProjectService, 
@@ -39,12 +38,13 @@ export class ProjectListComponent implements OnInit {
               return snapshots.map(c => ({ key: c.payload.key, ...(c.payload.val()) as {} }));
             });
 
+            /*
             this.subscription = this.projects$
               .subscribe(projects => {
                 this.items = projects;
 
                 this.initializeTable(projects);
-              });
+              });*/
           });
       });
       this.id = this.route.snapshot.paramMap.get('id');
@@ -52,7 +52,7 @@ export class ProjectListComponent implements OnInit {
     
       
   }
-
+/*
   initializeTable(projects){
     this.tableResource = new DataTableResource(projects);
       this.tableResource.query({ offset: 0 })
@@ -75,7 +75,7 @@ export class ProjectListComponent implements OnInit {
     this.items;
 
     this.reloadItems(filteredProjects);
-  }
+  }*/
 
   delete(id: string){
     if (!confirm('Do you really want to delete this project?')) return;
@@ -88,6 +88,6 @@ export class ProjectListComponent implements OnInit {
 
   ngOnDestroy() {
     // Unsubscribe when the component is destroyed
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 }

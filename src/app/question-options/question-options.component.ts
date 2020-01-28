@@ -20,7 +20,6 @@ export class QuestionOptionsComponent implements OnInit {
   }
 
   getDynamicReferences(){
-    alert(this.idQuestion);
     if(this.idQuestion)
       this.references$ = this.dynamicReferenceService.getDynamicReferencesByQuestion(this.idQuestion.toString());
       this.references$
@@ -34,7 +33,6 @@ export class QuestionOptionsComponent implements OnInit {
   }
 
   saveDynamicReference(reference){
-    console.log(this.references);
     this.dynamicReferenceService.create(reference);
   }
 

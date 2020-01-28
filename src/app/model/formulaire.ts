@@ -3,8 +3,8 @@ import { Project } from './project';
 import { FormType } from './form-type';
 export class Formulaire{
     Id: number;
-    Name: string;
-    Description: string;
+    name: string;
+    description: string;
     FormType: FormType;
     FormTypeId: number;
     Projet: Project;

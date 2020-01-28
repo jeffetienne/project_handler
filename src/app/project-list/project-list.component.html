@@ -2,6 +2,47 @@
 <p>
     <a routerLink="/new-project" class="btn btn-primary">New Project</a>
 </p>
+
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Domaine</th>
+            <th>Cree par</th>
+            <th>Cree le</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of projects$ | async">
+            <td>
+                {{ item.name }}
+            </td>
+            <td>
+                {{ item.description }}
+            </td>
+            <td>
+                {{ item.Domaine.name }}
+            </td>
+            <td>
+                {{ item.CreePar.nom }}
+            </td>
+            <td>
+                {{ item.CreeLe }}
+            </td>
+            <td>
+                <a [routerLink]="['/edit-project', item.key]">Edit</a>
+            </td>
+            <td>
+                <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!--
 <data-table
     [items]="items"
     [itemCount]="itemCount"
@@ -71,4 +112,4 @@
             <button class="btn btn-link" (click)="delete(item.key)">Delete</button>
         </ng-template>
     </data-table-column>
-</data-table>
+</data-table>-->

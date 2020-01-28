@@ -38,6 +38,7 @@ export class QuestionComponent implements OnInit {
   questionOption: QuestionOptionsComponent;
   hidden: boolean = true;
   pipe: any;
+  isCollapsed
   //question: Question = new Question();
   constructor(private router: Router,
     private route: ActivatedRoute,

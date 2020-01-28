@@ -10,4 +10,5 @@ export class Reponse{
     Reference: DynamicReference;
     CreePar: User;
     CreeLe: Date;
+    Texte: string;
 }

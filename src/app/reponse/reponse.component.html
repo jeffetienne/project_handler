@@ -1,4 +1,4 @@
-<form #f="ngForm" (ngSubmit)="save(f.value)">
+<form #f="ngForm" >
     <div class="form-group" *ngIf="question.ComponentId == 1">
         <label for="title"><h4>{{ question.Message }}</h4></label>
         <input matInput #ValeurTextBox="ngModel" 
@@ -9,7 +9,7 @@
             class="form-control" 
             required="question.Required">           
         <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
-            {{ question.Name }} is required.
+            {{ question.name }} is required.
         </div>
     </div>
 
@@ -22,7 +22,7 @@
             </option>
         </select>
         <div class="alert alert-danger" *ngIf="question.Required && ValeurComboBox.touched && ValeurComboBox.invalid">
-            {{ question.Name }} is required.
+            {{ question.name }} is required.
         </div>
     </div>
 
@@ -57,7 +57,7 @@
 
         </textarea>
         <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
-            {{ question.Name }} is required.
+            {{ question.name }} is required.
         </div>
     </div>
 
@@ -71,7 +71,7 @@
             class="form-control" 
             required="question.Required">           
         <div class="alert alert-danger" *ngIf="question.Required && ValeurTextBox.touched && ValeurTextBox.invalid">
-            {{ question.Name }} is required.
+            {{ question.name }} is required.
         </div>
     </div>
     

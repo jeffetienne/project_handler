@@ -1,3 +1,4 @@
+import { NotAuthGuardService } from './not-auth-guard.service';
 import { SharedFormulaireService } from './shared-formulaire.service';
 import { AdminAuthGuardService } from './admin-auth-guard.service';
 import { AuthGuardService } from './auth-guard.service';
@@ -10,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { ProjectService } from './project.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { DataTableModule } from 'angular5-data-table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectListComponent } from './project-list/project-list.component';
@@ -27,7 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionOptionsComponent } from './question-options/question-options.component';
-import { MatCheckboxModule, MatNativeDateModule, MatIconModule } from '@angular/material';
+import { MatCheckboxModule, MatNativeDateModule, MatIconModule, MatTableModule, MatTable } from '@angular/material';
 import { MatRadioModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -70,19 +70,20 @@ import { ShareFormulaireComponent } from './share-formulaire/share-formulaire.co
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
+    MatTableModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     NgbModule,
     FormsModule,
     CustomFormsModule,
     BrowserModule,
-    DataTableModule,
     HttpModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { 
         path: '', 
-        component: LoginComponent 
+        component: LoginComponent,
+        canActivate: [NotAuthGuardService] 
       },
       { 
         path: 'projet', 
@@ -136,11 +137,13 @@ import { ShareFormulaireComponent } from './share-formulaire/share-formulaire.co
       },
       { 
         path: 'signUp', 
-        component: SignUpComponent 
+        component: SignUpComponent,
+        canActivate: [NotAuthGuardService] 
       },
       { 
         path: 'login', 
-        component: LoginComponent 
+        component: LoginComponent,
+        canActivate: [NotAuthGuardService]
       } 
     ]),
     CollapseModule.forRoot(),
@@ -154,7 +157,8 @@ import { ShareFormulaireComponent } from './share-formulaire/share-formulaire.co
     AngularFireAuth,
     AuthGuardService,
     AdminAuthGuardService,
-    SharedFormulaireService
+    SharedFormulaireService,
+    NotAuthGuardService
   ],
   bootstrap: [AppComponent]
 })

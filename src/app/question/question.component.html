@@ -25,15 +25,15 @@
                     <form #f="ngForm" (ngSubmit)="save(f.value)">
                         <div class="form-group">
                             <label for="title">Name</label>
-                            <input matInput #Name="ngModel" (keyup.enter)="setTitle(name)" name="name" [(ngModel)]="question.name" id="name + {{ question.Id }}" type="text" class="form-control" required>
-                            <div class="alert alert-danger" *ngIf="Name.touched && Name.invalid">
+                            <input matInput #Title="ngModel" name="name" [(ngModel)]="question.name" id="name + {{ question.Id }}" type="text" class="form-control" required>
+                            <div class="alert alert-danger" *ngIf="Title.touched && Title.invalid">
                                 Name is required.
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <input #description="ngModel" (keyup.enter)="setMessage(description)" name="Message" [(ngModel)]="question.Message" id="Message + {{ question.Id }}" type="text" class="form-control" required>
-                            <div class="alert alert-danger" *ngIf="description.touched && description.invalid">
+                            <input #message="ngModel" name="description" [(ngModel)]="question.Message" id="Message + {{ question.Id }}" type="text" class="form-control" required>
+                            <div class="alert alert-danger" *ngIf="message.touched && message.invalid">
                                 Description is required.
                             </div>
                         </div>
